@@ -1,0 +1,1376 @@
+/* ==========================================================
+   BooksVy - Toko Buku Online Modern & Berwawasan Literasi
+   Inspirasi Desain: BetterWorldBooks.com Aesthetic
+   Palet: Deep Forest Green (#0b5d44), Warm Gold (#f59e0b), Cream Canvas (#fcfbfa)
+   ========================================================== */
+
+:root {
+    --bvy-primary: #0b5d44;           /* Deep Forest Green (Signature Better World Books) */
+    --bvy-primary-dark: #074230;      /* Dark Pine Green */
+    --bvy-primary-light: #167a5b;     /* Bright Pine Green */
+    --bvy-secondary: #0f766e;         /* Teal Accent */
+    --bvy-accent: #f59e0b;            /* Warm Golden Yellow / Amber */
+    --bvy-accent-hover: #d97706;      /* Darker Gold */
+    --bvy-dark: #11221b;              /* Deep Forest Slate */
+    --bvy-navy: #183329;              /* Deep Green-Navy */
+    --bvy-light: #fbf9f5;             /* Warm Paper Canvas */
+    --bvy-card-border: #e8e3d8;       /* Subtle Warm Border */
+    --bvy-radius: 12px;
+    --bvy-shadow-sm: 0 2px 8px rgba(11, 93, 68, 0.06);
+    --bvy-shadow-md: 0 8px 24px rgba(11, 93, 68, 0.09);
+    --bvy-shadow-lg: 0 16px 36px rgba(11, 93, 68, 0.14);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bvy-light);
+    color: #2b3933;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main.main-content {
+    flex: 1 0 auto;
+}
+
+/* ================= Top Announcement Bar (Better World Books Style) ================= */
+.top-announcement-bar {
+    background: #074230;
+    color: #e2f0ea;
+    font-size: 0.82rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.top-announcement-bar a {
+    color: #fbbf24;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.top-announcement-bar a:hover {
+    text-decoration: underline;
+}
+
+/* ================= Navbar Styles ================= */
+.app-navbar {
+    background: linear-gradient(135deg, #0b5d44 0%, #063929 100%);
+    box-shadow: 0 4px 20px rgba(7, 66, 48, 0.22);
+    padding: 0.65rem 0;
+    border-bottom: 3px solid #f59e0b;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.app-navbar-admin {
+    background: linear-gradient(135deg, #0f1d17 0%, #173026 100%);
+    border-bottom: 3px solid #10b981;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Brand Logo Button */
+.navbar-brand-btn {
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    text-decoration: none;
+}
+
+.navbar-brand-btn:hover,
+.navbar-brand-btn:focus {
+    background: rgba(255, 255, 255, 0.17);
+    border-color: rgba(251, 191, 36, 0.65);
+    transform: translateY(-1.5px);
+    box-shadow: 0 6px 18px rgba(245, 158, 11, 0.28);
+}
+
+.navbar-brand-btn:active {
+    transform: translateY(0);
+}
+
+.brand-emblem {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: #11221b;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.navbar-brand-btn:hover .brand-emblem {
+    transform: rotate(-10deg) scale(1.08);
+}
+
+.brand-emblem-admin {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff;
+}
+
+.brand-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #ffffff;
+    line-height: 1.1;
+    transition: opacity 0.2s ease;
+}
+
+.navbar-brand:hover .brand-title {
+    opacity: 0.9;
+}
+
+.brand-title span {
+    color: #fbbf24;
+    text-shadow: 0 0 10px rgba(251, 191, 36, 0.35);
+}
+
+.brand-tagline {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+    margin-top: 1px;
+}
+
+/* Nav Links Styling */
+.nav-link-custom {
+    color: rgba(255, 255, 255, 0.88) !important;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 0.45rem 0.95rem !important;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.nav-link-custom i {
+    font-size: 1.05rem;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.nav-link-custom:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.14);
+    transform: translateY(-1px);
+}
+
+.nav-link-custom:hover i {
+    color: #fbbf24;
+    transform: scale(1.1);
+}
+
+.nav-link-custom.active {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.18);
+    font-weight: 600;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+.nav-link-custom.active i {
+    color: #fbbf24;
+}
+
+/* Keranjang Button Navbar */
+.nav-cart-btn {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    color: #11221b !important;
+    border: none !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem;
+    padding: 0.42rem 1.05rem !important;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.32);
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.nav-cart-btn:hover {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
+    color: #074230 !important;
+    transform: translateY(-1.5px);
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.45);
+}
+
+.nav-cart-btn:active {
+    transform: translateY(0);
+}
+
+/* User Pill & Auth Buttons */
+.nav-user-pill {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    padding: 0.38rem 0.95rem;
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    font-size: 0.88rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+}
+
+.nav-user-pill:hover,
+.nav-user-pill[aria-expanded="true"] {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border-color: rgba(251, 191, 36, 0.5);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-nav-login {
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    transition: all 0.2s ease;
+}
+
+.btn-nav-login:hover {
+    background: rgba(255, 255, 255, 0.22) !important;
+    border-color: #ffffff !important;
+    transform: translateY(-1px);
+}
+
+.btn-nav-register {
+    background: #ffffff !important;
+    color: #0b5d44 !important;
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+}
+
+.btn-nav-register:hover {
+    background: #fbbf24 !important;
+    color: #11221b !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.35);
+}
+
+/* Notification dot animation */
+@keyframes navDotPulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.35); opacity: 0.8; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+.nav-cart-badge:not(.d-none) {
+    animation: navDotPulse 2s infinite ease-in-out;
+}
+
+/* ================= Hero Carousel Slider (Better World Books Style) ================= */
+.hero-carousel {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--bvy-shadow-lg);
+    position: relative;
+}
+
+/* Animasi slide horizontal halus */
+.hero-carousel .carousel-item {
+    transition: transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.carousel-slide-item {
+    height: 400px;
+    min-height: 400px;
+    max-height: 400px;
+    padding: 3rem 3.5rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* Judul & Subtitle Konsisten */
+.hero-slide-title {
+    font-size: clamp(1.6rem, 3.2vw, 2.35rem);
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+.hero-slide-subtitle {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    opacity: 0.88;
+}
+
+/* Kotak Foto Banner Seragam */
+.hero-slide-img-box {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-banner-photo {
+    max-height: 290px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 14px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+    transition: transform 0.3s ease;
+}
+
+.hero-banner-photo:hover {
+    transform: scale(1.02);
+}
+
+/* Slide Gradients (Warm & Eco Literary Tones) */
+.slide-bg-green {
+    background: linear-gradient(135deg, #074230 0%, #0b5d44 55%, #15803d 100%);
+}
+
+.slide-bg-wine {
+    background: linear-gradient(135deg, #450a0a 0%, #78350f 50%, #b45309 100%);
+}
+
+.slide-bg-teal {
+    background: linear-gradient(135deg, #134e4a 0%, #0f766e 50%, #0d9488 100%);
+}
+
+.slide-bg-forest {
+    background: linear-gradient(135deg, #1e3a2b 0%, #2d5a43 50%, #3e7b5c 100%);
+}
+
+.carousel-slide-item::before {
+    content: '';
+    position: absolute;
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 70%);
+    top: -120px;
+    right: -80px;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* Carousel Controls & Indicators */
+.carousel-btn-nav {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(7, 66, 48, 0.45);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    opacity: 0.85;
+    transition: all 0.25s ease;
+    top: 50%;
+    transform: translateY(-50%);
+    position: absolute;
+    z-index: 5;
+}
+
+.carousel-btn-nav:hover {
+    background: rgba(255, 255, 255, 0.4);
+    opacity: 1;
+    color: #ffffff;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-control-prev.carousel-btn-nav {
+    left: 1.5rem;
+}
+
+.carousel-control-next.carousel-btn-nav {
+    right: 1.5rem;
+}
+
+.carousel-indicators-custom {
+    bottom: 1.25rem;
+    margin-bottom: 0;
+}
+
+.carousel-indicators-custom [data-bs-target] {
+    width: 28px;
+    height: 6px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.45);
+    border: 0;
+    transition: all 0.3s ease;
+}
+
+.carousel-indicators-custom .active {
+    width: 50px;
+    background-color: #fbbf24;
+    box-shadow: 0 0 10px rgba(251, 191, 36, 0.8);
+}
+
+/* Responsive Carousel */
+@media (max-width: 991px) {
+    .carousel-slide-item {
+        height: auto;
+        min-height: 380px;
+        max-height: none;
+        padding: 3rem 2rem;
+    }
+    .hero-slide-img-box {
+        height: 240px;
+    }
+    .hero-banner-photo {
+        max-height: 230px;
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-slide-item {
+        height: auto;
+        min-height: 340px;
+        max-height: none;
+        padding: 2.25rem 1.25rem;
+    }
+    .carousel-btn-nav {
+        display: none;
+    }
+    .hero-slide-title {
+        font-size: 1.5rem;
+    }
+    .hero-slide-subtitle {
+        font-size: 0.95rem;
+        -webkit-line-clamp: 3;
+    }
+}
+
+/* ================= Value Proposition Props (Better World Books Style) ================= */
+.value-prop-card {
+    background: #ffffff;
+    border: 1px solid var(--bvy-card-border);
+    border-radius: 14px;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.25s ease;
+    box-shadow: var(--bvy-shadow-sm);
+}
+
+.value-prop-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--bvy-shadow-md);
+    border-color: #cbd5e1;
+}
+
+.value-prop-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #eef6f2;
+    color: var(--bvy-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.45rem;
+    flex-shrink: 0;
+}
+
+/* ================= Book Cards (Better World Books Style) ================= */
+.book-card {
+    background: #ffffff;
+    border-radius: var(--bvy-radius);
+    border: 1px solid var(--bvy-card-border);
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--bvy-shadow-md);
+    border-color: #b5c9be;
+}
+
+/* Out of Stock Card Styling (Abu-abu / Muted) */
+.book-card-out-of-stock {
+    background-color: #fafafa !important;
+    border-color: #e5e7eb !important;
+}
+
+.book-card-out-of-stock .book-cover-wrapper {
+    background-color: #eef1f4 !important;
+    opacity: 0.65;
+    filter: grayscale(85%);
+}
+
+.book-card-out-of-stock .book-category-badge {
+    background: rgba(100, 116, 139, 0.85) !important;
+}
+
+.book-card-out-of-stock .book-title a {
+    color: #64748b !important;
+}
+
+.book-card-out-of-stock .book-price {
+    color: #94a3b8 !important;
+}
+
+.book-card-out-of-stock:hover {
+    transform: none !important;
+    box-shadow: var(--bvy-shadow-sm) !important;
+}
+
+.book-cover-wrapper {
+    position: relative;
+    background: #f4f1eb;
+    padding-top: 130%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-cover-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.book-card:hover .book-cover-img {
+    transform: scale(1.04);
+}
+
+.book-category-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(7, 66, 48, 0.88);
+    backdrop-filter: blur(4px);
+    color: #fff;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.book-stock-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.book-card-body {
+    padding: 1.15rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.book-format-tag {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.book-title {
+    font-size: 1.02rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #11221b;
+    margin-bottom: 0.3rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 2.7rem;
+}
+
+.book-author {
+    font-size: 0.84rem;
+    color: #52635a;
+    margin-bottom: 0.5rem;
+}
+
+.book-stars {
+    color: #f59e0b;
+    font-size: 0.78rem;
+    margin-bottom: 0.65rem;
+}
+
+.book-price {
+    font-size: 1.22rem;
+    font-weight: 800;
+    color: var(--bvy-primary);
+    margin-top: auto;
+}
+
+/* ================= Better World Books Buttons ================= */
+.btn-primary {
+    background-color: var(--bvy-primary) !important;
+    border-color: var(--bvy-primary) !important;
+    color: #ffffff !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--bvy-primary-dark) !important;
+    border-color: var(--bvy-primary-dark) !important;
+    color: #ffffff !important;
+}
+
+.btn-warning {
+    background-color: var(--bvy-accent) !important;
+    border-color: var(--bvy-accent) !important;
+    color: #11221b !important;
+    font-weight: 700;
+}
+
+.btn-warning:hover,
+.btn-warning:focus {
+    background-color: var(--bvy-accent-hover) !important;
+    border-color: var(--bvy-accent-hover) !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-primary {
+    color: var(--bvy-primary) !important;
+    border-color: var(--bvy-primary) !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--bvy-primary) !important;
+    color: #ffffff !important;
+}
+
+/* ================= Book Cover Placeholder (No Default Image) ================= */
+.book-no-cover {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(145deg, #f4f1eb 0%, #ede8de 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #b0a48e;
+    gap: 0.5rem;
+    padding: 1rem;
+}
+
+.book-no-cover i {
+    font-size: 2.8rem;
+    opacity: 0.55;
+}
+
+.book-no-cover span {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    line-height: 1.3;
+}
+
+/* ==========================================================
+   Admin Dashboard Layout - Modern Sidebar Architecture
+   Theme: BooksVy Forest Emerald & Deep Slate
+   ========================================================== */
+
+.admin-layout-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8fafc;
+    position: relative;
+}
+
+/* Sidebar Styles - Fixed Desktop (Tidak Ikut Ter-scroll Saat Halaman Discrool) */
+.admin-sidebar {
+    width: 270px;
+    min-width: 270px;
+    background: linear-gradient(180deg, #061611 0%, #0a2119 50%, #061510 100%);
+    color: #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    border-right: 1px solid rgba(16, 185, 129, 0.15);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
+    z-index: 1040;
+    transition: left 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Brand Button: TIDAK PAKAI LOGO DI BUTTON-NYA, Murni Teks Bersih & Elegan */
+.admin-sidebar-brand {
+    padding: 1.4rem 1.25rem 1.2rem 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-brand-button-text {
+    display: block;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    transition: all 0.25s ease;
+}
+
+.admin-brand-button-text:hover {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: #34d399;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.18);
+    transform: translateY(-1px);
+}
+
+.admin-brand-button-text .brand-text-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #ffffff;
+    line-height: 1.1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-brand-button-text .brand-text-title span.vy {
+    color: #34d399;
+    text-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
+}
+
+.admin-brand-button-text .brand-text-badge {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    padding: 2px 7px;
+    border-radius: 6px;
+    background: rgba(16, 185, 129, 0.22);
+    color: #6ee7b7;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    text-transform: uppercase;
+}
+
+.admin-brand-button-text .brand-text-sub {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    margin-top: 4px;
+    display: block;
+}
+
+/* Sidebar Nav Scroll Container */
+.admin-sidebar-menu {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 1.25rem 0.95rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(16, 185, 129, 0.3) transparent;
+}
+
+.admin-sidebar-menu::-webkit-scrollbar {
+    width: 4px;
+}
+.admin-sidebar-menu::-webkit-scrollbar-thumb {
+    background-color: rgba(16, 185, 129, 0.3);
+    border-radius: 4px;
+}
+
+.admin-menu-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    padding: 0 0.75rem;
+    margin-bottom: 0.45rem;
+    margin-top: 1rem;
+}
+
+.admin-menu-label:first-child {
+    margin-top: 0;
+}
+
+/* Tombol Menu di Samping (Pindah dari Header - Tanpa Logo di Button-nya) */
+.admin-sidebar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.62rem 0.95rem;
+    margin-bottom: 0.3rem;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.78);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+    background: transparent;
+}
+
+.admin-sidebar-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.07);
+    border-left-color: rgba(52, 211, 153, 0.6);
+    transform: translateX(2px);
+}
+
+.admin-sidebar-btn.active {
+    color: #ffffff;
+    background: linear-gradient(90deg, rgba(16, 185, 129, 0.22) 0%, rgba(16, 185, 129, 0.08) 100%);
+    border-left-color: #34d399;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Tombol Aksi Samping (Tambah Buku) */
+.admin-sidebar-action-btn {
+    display: block;
+    text-align: center;
+    padding: 0.65rem 1rem;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff !important;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.88rem;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+    margin: 0.75rem 0.25rem 0.5rem 0.25rem;
+    transition: all 0.25s ease;
+}
+
+.admin-sidebar-action-btn:hover {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    color: #062b1e !important;
+    transform: translateY(-1.5px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.45);
+}
+
+/* Tombol Halaman Toko di Bawah Tambah Buku (Kontras Jelas & Terbaca) */
+.admin-sidebar-store-btn {
+    display: block;
+    text-align: center;
+    padding: 0.55rem 0.95rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin: 0 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.admin-sidebar-store-btn:hover {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: #34d399;
+    color: #34d399 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Sidebar Footer (Admin Profil & Logout) */
+.admin-sidebar-footer {
+    padding: 1.1rem 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.22);
+}
+
+.admin-user-profile-badge {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.admin-user-info {
+    line-height: 1.2;
+}
+
+.admin-user-name {
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: #ffffff;
+    display: block;
+}
+
+.admin-user-role {
+    font-size: 0.7rem;
+    color: #34d399;
+    font-weight: 500;
+}
+
+.admin-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #10b981;
+    display: inline-block;
+    box-shadow: 0 0 8px #10b981;
+    animation: adminDotPulse 2s infinite ease-in-out;
+}
+
+@keyframes adminDotPulse {
+    0% { transform: scale(0.9); opacity: 0.8; }
+    50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px #34d399; }
+    100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+.admin-sidebar-btn-logout {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 0.48rem 0.75rem;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+    font-size: 0.82rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.admin-sidebar-btn-logout:hover {
+    background: #ef4444;
+    color: #ffffff;
+    border-color: #ef4444;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+}
+
+/* Main Content Area (Kanan) - Margin Left 270px Untuk Ruang Fixed Sidebar */
+.admin-main-container {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background-color: #f8fafc;
+    margin-left: 270px;
+    width: calc(100% - 270px);
+}
+
+/* Header Atas di Area Konten (Clean Minimal Top Bar) */
+.admin-top-navbar {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.85rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+}
+
+.admin-header-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.admin-header-date {
+    font-size: 0.78rem;
+    color: #64748b;
+    margin-top: 1px;
+}
+
+.admin-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.admin-btn-preview-store {
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.38rem 0.85rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.admin-btn-preview-store:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+    border-color: #94a3b8;
+}
+
+.admin-sidebar-toggle-btn {
+    display: none;
+    background: transparent;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 0.35rem 0.65rem;
+    color: #334155;
+    font-size: 1.2rem;
+}
+
+/* Mobile Sidebar Drawer */
+@media (max-width: 991.98px) {
+    .admin-main-container {
+        margin-left: 0;
+        width: 100%;
+    }
+    .admin-sidebar-toggle-btn {
+        display: inline-flex;
+    }
+    .admin-sidebar {
+        position: fixed;
+        left: -270px;
+        top: 0;
+        bottom: 0;
+        z-index: 1050;
+    }
+    .admin-sidebar.show {
+        left: 0;
+    }
+    .admin-sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1045;
+    }
+    .admin-sidebar-overlay.show {
+        display: block;
+    }
+}
+
+/* Avatar initial circle */
+.admin-avatar-dot {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10b981, #0b5d44);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.admin-avatar-dot.lg {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+}
+
+/* Admin user pill override */
+.admin-user-pill {
+    background: rgba(16, 185, 129, 0.15) !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+.admin-user-pill:hover {
+    background: rgba(16, 185, 129, 0.25) !important;
+}
+
+/* Admin dropdown */
+.admin-dropdown {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18) !important;
+}
+
+.admin-dropdown .dropdown-item:hover {
+    background: #f4faf7;
+}
+
+/* ================= Admin Cards & Table ================= */
+.stat-card {
+    background: #ffffff;
+    border-radius: var(--bvy-radius);
+    border: 1px solid var(--bvy-card-border);
+    padding: 1.4rem;
+    transition: all 0.25s ease;
+    box-shadow: var(--bvy-shadow-sm);
+}
+
+.stat-card:hover {
+    box-shadow: var(--bvy-shadow-md);
+    transform: translateY(-3px);
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.custom-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.custom-table thead th {
+    background-color: #f5f2eb;
+    color: #33473d;
+    font-weight: 700;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e0d9cc;
+    padding: 0.9rem 1rem;
+}
+
+.custom-table tbody td {
+    padding: 0.9rem 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f2eee6;
+}
+
+.custom-table tbody tr:hover td {
+    background-color: #faf8f4;
+}
+
+/* ================= Stepper Alur Belanja ================= */
+.order-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #8c9b93;
+}
+
+.step-item.active {
+    color: var(--bvy-primary);
+}
+
+.step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e2e8e4;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.step-item.active .step-number {
+    background: var(--bvy-primary);
+    color: #fff;
+}
+
+/* ================= Footer (Better World Books Style) ================= */
+.app-footer {
+    background: #09261d;
+    color: #d1ded8;
+    margin-top: auto;
+    padding-top: 3.5rem;
+    border-top: 4px solid #f59e0b;
+}
+
+.app-footer h6 {
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.app-footer a {
+    color: #a4beaf;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.app-footer a:hover {
+    color: #fcd34d;
+}
+
+.footer-mission-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 4px solid #f59e0b;
+    border-radius: 12px;
+    padding: 1.5rem 1.75rem;
+    margin-top: -0.5rem;
+}
+
+/* ================= Smooth Interactions & Cart Animations ================= */
+.btn-submit-cart,
+.form-add-cart button[type="submit"] {
+    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-submit-cart:active,
+.form-add-cart button[type="submit"]:active {
+    transform: scale(0.95);
+}
+
+.btn-added-success {
+    background-color: #10b981 !important;
+    border-color: #10b981 !important;
+    color: #ffffff !important;
+    transform: scale(1.02);
+}
+
+/* Navbar Cart Badge Pop Animation */
+@keyframes badgePop {
+    0% { transform: scale(1); }
+    35% { transform: scale(1.5); }
+    65% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+.nav-cart-badge.badge-pop {
+    animation: badgePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Book Card Subtle Highlight on Add */
+.book-card {
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.3s ease, border-color 0.35s ease;
+}
+
+.book-card.added-highlight {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.28), var(--bvy-shadow-md) !important;
+}
+
+/* Smooth Floating Toast Notification */
+.toast-cart-smooth {
+    background: rgba(9, 38, 29, 0.96) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(245, 158, 11, 0.38) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.38) !important;
+    color: #ffffff !important;
+    border-radius: 16px !important;
+}
+
+.toast-cart-smooth.show {
+    animation: toastSmoothIn 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes toastSmoothIn {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ================= Pagination Styling ================= */
+.pagination {
+    margin-bottom: 0;
+    gap: 4px;
+    align-items: center;
+}
+
+.page-item .page-link {
+    color: var(--bvy-primary);
+    border-radius: 8px !important;
+    border: 1px solid #e2e8f0;
+    padding: 0.38rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.25;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-item .page-link:hover {
+    background-color: #e6f4ea;
+    border-color: var(--bvy-primary);
+    color: var(--bvy-primary-dark);
+}
+
+.page-item.active .page-link {
+    background-color: var(--bvy-primary);
+    border-color: var(--bvy-primary);
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(11, 93, 68, 0.25);
+}
+
+.page-item.disabled .page-link {
+    color: #94a3b8;
+    background-color: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+.page-link svg,
+.pagination svg {
+    width: 0.95rem !important;
+    height: 0.95rem !important;
+    max-width: 1rem !important;
+    max-height: 1rem !important;
+    display: inline-block;
+}
+
+/* ================= Print Styling ================= */
+@media print {
+    .app-navbar, .app-footer, .no-print, .btn, .alert, .top-announcement-bar {
+        display: none !important;
+    }
+    body {
+        background: #fff !important;
+        color: #000 !important;
+        font-size: 12pt;
+    }
+    .card {
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+    }
+}
