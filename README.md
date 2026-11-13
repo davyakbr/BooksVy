@@ -14,6 +14,10 @@
   </a>
 </p>
 
+<p align="center">
+  🔗 <strong>Live Demo Preview:</strong> <a href="https://davyakbr.github.io/BooksVy/" target="_blank">https://davyakbr.github.io/BooksVy/</a>
+</p>
+
 ---
 
 ## 📖 Tentang Aplikasi
