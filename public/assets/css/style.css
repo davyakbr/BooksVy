@@ -38,6 +38,30 @@ main.main-content {
     flex: 1 0 auto;
 }
 
+/* ================= Dynamic Full-Width Desktop Layout ================= */
+.app-fluid-container {
+    width: 100%;
+    padding-left: clamp(1rem, 2.8vw, 3.75rem);
+    padding-right: clamp(1rem, 2.8vw, 3.75rem);
+    margin-right: auto;
+    margin-left: auto;
+    box-sizing: border-box;
+}
+
+@media (min-width: 1400px) {
+    .app-fluid-container {
+        padding-left: 3.25rem;
+        padding-right: 3.25rem;
+    }
+}
+
+@media (min-width: 1920px) {
+    .app-fluid-container {
+        padding-left: 4.5rem;
+        padding-right: 4.5rem;
+    }
+}
+
 /* ================= Top Announcement Bar (Better World Books Style) ================= */
 .top-announcement-bar {
     background: #074230;
@@ -287,15 +311,29 @@ main.main-content {
 }
 
 .carousel-slide-item {
-    height: 400px;
-    min-height: 400px;
-    max-height: 400px;
-    padding: 3rem 3.5rem;
+    height: 410px;
+    min-height: 410px;
+    max-height: 410px;
+    padding: clamp(2rem, 3.2vw, 3.75rem) clamp(2rem, 3.5vw, 4.5rem);
     position: relative;
     overflow: hidden;
     display: flex;
     align-items: center;
     box-sizing: border-box;
+}
+
+@media (min-width: 1400px) {
+    .carousel-slide-item {
+        height: 440px;
+        min-height: 440px;
+        max-height: 440px;
+    }
+    .hero-slide-img-box {
+        height: 330px;
+    }
+    .hero-banner-photo {
+        max-height: 320px;
+    }
 }
 
 /* Judul & Subtitle Konsisten */

@@ -1,60 +1,132 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📚 BooksVy - Toko Buku Online Modern
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="Screenshoot/01_landing_page.jpg" alt="BooksVy Landing Page" width="100%" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);">
 </p>
 
-## About Laravel
+<p align="center">
+  <img src="https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel">
+  <img src="https://img.shields.io/badge/PHP-8.3+-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
+  <img src="https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
+  <img src="https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white" alt="Bootstrap">
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📖 Tentang Aplikasi
+**BooksVy** adalah platform toko buku online modern berbasis web yang dibangun menggunakan **Laravel 12** dan **MySQL**. Aplikasi ini dirancang dengan antarmuka yang elegan bertema *Forest Pine & Emerald*, responsif, serta mendukung pengalaman pengguna yang intuitif mulai dari eksplorasi katalog, keranjang belanja interaktif tanpa reload halaman (AJAX), transaksi *Payment at Delivery*, hingga panel kontrol administrasi lengkap.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🌟 Fitur Utama
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 🛒 Sisi Pengguna (Pelanggan / Customer)
+- **Tampilan Penuh & Dinamis:** Menyesuaikan secara mulus pada layar monitor desktop lebar (5–6 kolom buku per baris).
+- **Katalog Buku & Pencarian Real-time:** Filter berdasarkan genre kategori, pencarian judul/penulis/penerbit, dan sortir harga.
+- **Detail Buku & Smart Stock Sync:** Validasi ketersediaan stok riil yang sinkron otomatis dengan item yang sudah ada di keranjang.
+- **Keranjang Belanja Cerdas (AJAX Counter):** Tambah, kurang (`+` / `-`), dan hapus buku seketika tanpa refresh halaman.
+- **Sistem Checkout Payment at Delivery:** Pembelian aman dengan nomor invoice unik, pemilihan metode pembayaran, serta kalkulasi otomatis.
+- **Riwayat Pesanan:** Memantau status transaksi dan pengiriman buku.
+- **Pusat Bantuan & Tiket Kontak:** Mengirim pesan konsultasi langsung ke Administrator.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 🛡️ Sisi Administrator (Admin Panel)
+- **Modern Sidebar Dashboard:** Tata letak sidebar tetap (*fixed*) yang tidak ikut ter-scroll saat membaca tabel data.
+- **Manajemen Katalog Buku (CRUD Lengkap):** Tambah buku dengan proteksi anti-duplikasi judul/penulis, edit, upload cover, serta proteksi buku tidak bisa dihapus jika masih ada stok.
+- **Kelola Kategori Genre:** Proteksi kategori tidak dapat dihapus jika masih digunakan oleh buku aktif.
+- **Kelola Pesanan & Transaksi:** Konfirmasi status pembayaran (*Lunas/Dibatalkan*) dan status logistik (*Sedang Dikirim/Selesai*).
+- **Pesan Masuk Pelanggan:** Membaca dan menanggapi tiket pesan dari pelanggan.
+- **Pop-Up Konfirmasi Interaktif (SweetAlert2):** Notifikasi pop-up modern sebelum melakukan aksi hapus data atau logout.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## 📸 Tangkapan Layar (Screenshots)
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 1. Halaman Depan / Landing Page
+![Landing Page](Screenshoot/01_landing_page.jpg)
 
-```bash
-composer require laravel/boost --dev
+### 2. Dashboard Administrator
+![Admin Dashboard](Screenshoot/08_admin_dashboard.png)
 
-php artisan boost:install
-```
+### 3. Keranjang Belanja (Interactive Cart)
+![Keranjang Belanja](Screenshoot/03_keranjang_belanja.jpg)
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 4. Checkout & Transaksi
+![Checkout Pesanan](Screenshoot/05_checkout_pesanan.jpg)
 
-## Contributing
+### 5. Tambah Buku Baru (Panel Admin)
+![Admin Tambah Buku](Screenshoot/10_admin_tambah_buku.jpg)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 6. Kelola Kategori Buku
+![Admin Kelola Kategori](Screenshoot/11_admin_kelola_kategori.png)
 
-## Code of Conduct
+### 7. Hubungi Admin & Tiket Bantuan
+![Hubungi Admin](Screenshoot/02_hubungi_admin.png)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 8. Pesan Masuk dari Pelanggan (Admin)
+![Admin Pesan Masuk](Screenshoot/09_admin_pesan_masuk.png)
 
-## Security Vulnerabilities
+### 9. Tentang BooksVy
+![Tentang Kami](Screenshoot/04_tentang_kami.jpg)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 10. Autentikasi Pengguna
+| Masuk (Login) | Daftar Akun (Register) |
+| :---: | :---: |
+| ![Login](Screenshoot/06_login.png) | ![Register](Screenshoot/07_register.png) |
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-"# BooksVy" 
-"# BooksVy" 
+## 🛠️ Teknologi yang Digunakan
+- **Framework:** Laravel 12
+- **Bahasa Pemrograman:** PHP 8.3+
+- **Database:** MySQL
+- **Frontend / Styling:** Blade Templating, Bootstrap 5.3, Bootstrap Icons, Custom CSS
+- **Interaktivitas:** Vanilla JavaScript, Fetch API (AJAX), SweetAlert2
+- **Web Server:** Laragon / Apache
+
+---
+
+## 🚀 Panduan Instalasi Lokal
+
+1. **Clone Repository:**
+   ```bash
+   git clone https://github.com/davyakbr/BooksVy.git
+   cd BooksVy
+   ```
+
+2. **Instal Dependensi Composer:**
+   ```bash
+   composer install
+   ```
+
+3. **Konfigurasi Environment:**
+   Salin `.env.example` menjadi `.env` dan sesuaikan koneksi database MySQL:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=booksvy_db
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+4. **Generate Application Key:**
+   ```bash
+   php artisan key:generate
+   ```
+
+5. **Migrasi Database:**
+   ```bash
+   php artisan migrate
+   ```
+
+6. **Jalankan Server Lokal:**
+   ```bash
+   php artisan serve
+   ```
+   Akses di browser melalui: `http://localhost:8000`
+
+---
+
+## 👤 Pengembang
+* **Nama Repository:** BooksVy
+* **GitHub:** [@davyakbr](https://github.com/davyakbr)

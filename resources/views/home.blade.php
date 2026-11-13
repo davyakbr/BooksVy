@@ -221,7 +221,7 @@
         </div>
     </div>
 @else
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 g-4 mb-5">
         @foreach ($books as $b)
             @php $isBookOutOfStock = ($b->stock <= 0); @endphp
             <div class="col" id="book-{{ $b->id }}">

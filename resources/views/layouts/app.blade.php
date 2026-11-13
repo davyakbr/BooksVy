@@ -33,7 +33,7 @@
 
 <!-- Top Announcement Bar (Better World Books Style) -->
 <div class="top-announcement-bar d-none d-md-block">
-    <div class="container d-flex justify-content-between align-items-center">
+    <div class="container-fluid app-fluid-container d-flex justify-content-between align-items-center">
         <div>
             <i class="bi bi-truck me-1 text-warning"></i>
             <strong>Gratis Ongkir</strong> Seluruh Indonesia • 100% Buku Asli Penerbit Resmi
@@ -48,7 +48,7 @@
 
 <!-- Navbar Area Pelanggan (Frontend) -->
 <nav class="navbar navbar-expand-lg app-navbar sticky-top">
-    <div class="container">
+    <div class="container-fluid app-fluid-container">
         <!-- Brand BooksVy: Murni Teks Bersih Tanpa Logo / Ikon / Logo-Box -->
         <a class="navbar-brand d-inline-flex flex-column text-decoration-none me-4 py-0" href="{{ route('home') }}">
             <span class="brand-title">Books<span>Vy</span></span>
@@ -157,7 +157,7 @@
 </nav>
 
 <main class="main-content py-4">
-    <div class="container">
+    <div class="container-fluid app-fluid-container">
         <!-- Flash Alert Messages -->
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 d-flex align-items-center mb-4" role="alert">
@@ -210,7 +210,7 @@
         </div>
     </div>
 
-    <div class="container pb-4">
+    <div class="container-fluid app-fluid-container pb-4">
         <!-- Trust Badges Row -->
         <div class="d-flex flex-wrap justify-content-center gap-3 mb-4">
             <span class="badge rounded-pill px-3 py-2" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#c9ddd4; font-weight:500; font-size:.78rem;">
