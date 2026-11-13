@@ -9,6 +9,9 @@
   <img src="https://img.shields.io/badge/PHP-8.3+-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
   <img src="https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
   <img src="https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white" alt="Bootstrap">
+  <a href="https://davyakbr.github.io/BooksVy/" target="_blank">
+    <img src="https://img.shields.io/badge/🌐_Live_Demo-GitHub_Pages-10b981?style=for-the-badge&logo=githubpages&logoColor=white" alt="Live Demo">
+  </a>
 </p>
 
 ---
