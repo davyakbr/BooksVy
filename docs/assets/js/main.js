@@ -428,9 +428,77 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // 6. Enhanced Banner Button Click & Micro-Interactions (Direct to Book, Pause Carousel, Smooth Scroll)
-    const heroBannerButtons = document.querySelectorAll('.hero-banner-btn, .hero-carousel a[href*="#"], .hero-slide-img-box a');
-    heroBannerButtons.forEach(function (btn) {
+    // 6. Instant Client-Side Category Filter (No Page Reload, Banner Stays on Current Slide)
+    window.filterCatalogByCategory = function (categoryId, categoryName = '') {
+        const bookItems = document.querySelectorAll('.book-item');
+        let visibleCount = 0;
+
+        // Update Category Chips Active State
+        const chips = document.querySelectorAll('.category-chip');
+        chips.forEach(function (chip) {
+            const chipCat = chip.dataset.category || '';
+            if (String(chipCat) === String(categoryId || '')) {
+                chip.className = 'badge rounded-pill px-3 py-2 text-decoration-none category-chip bg-primary text-white';
+                if (!categoryName && chip.dataset.categoryName) {
+                    categoryName = chip.dataset.categoryName;
+                }
+            } else {
+                chip.className = 'badge rounded-pill px-3 py-2 text-decoration-none category-chip bg-light text-secondary border';
+            }
+        });
+
+        // Filter and animate book items
+        bookItems.forEach(function (item) {
+            const itemCat = item.dataset.category || '';
+            if (!categoryId || String(itemCat) === String(categoryId)) {
+                item.style.display = '';
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(12px)';
+                item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, 20);
+                visibleCount++;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        // Update Heading and Count
+        const headingEl = document.getElementById('catalogHeading');
+        const countEl = document.getElementById('catalogCount');
+        if (headingEl) {
+            headingEl.textContent = categoryId ? `Kategori: ${categoryName || 'Koleksi Terpilih'}` : 'Semua Koleksi Buku';
+        }
+        if (countEl) {
+            countEl.textContent = `Menampilkan ${visibleCount} judul buku di BooksVy`;
+        }
+
+        // Toggle Empty State
+        const noBooksEl = document.getElementById('noBooksFound');
+        if (noBooksEl) {
+            if (visibleCount === 0) {
+                noBooksEl.classList.remove('d-none');
+            } else {
+                noBooksEl.classList.add('d-none');
+            }
+        }
+    };
+
+    // Helper to extract category parameter from href
+    function getCategoryParam(href) {
+        if (!href) return null;
+        const match = href.match(/category=([0-9]+)/);
+        return match ? match[1] : null;
+    }
+
+    // 7. Enhanced Banner Button Click & Category Interactivity (Pause Carousel, Direct Filter, Smooth Scroll)
+    const bannerAndCategoryButtons = document.querySelectorAll(
+        '.hero-banner-btn, .hero-carousel a, .hero-slide-img-box a, .category-chip'
+    );
+
+    bannerAndCategoryButtons.forEach(function (btn) {
         btn.addEventListener('click', function (e) {
             // 1. Immediately pause carousel so it does NOT auto-slide away or reset to slide 1
             const carouselEl = document.getElementById('booksVyHeroCarousel');
@@ -452,9 +520,45 @@ document.addEventListener('DOMContentLoaded', function () {
                 setTimeout(() => ripple.remove(), 600);
             }
 
-            // 3. Smooth Scroll to book or catalog anchor without reloading page
-            const href = btn.getAttribute('href');
-            if (href && (href.startsWith('#') || href.includes('#'))) {
+            const href = btn.getAttribute('href') || '';
+            const categoryFromParam = getCategoryParam(href);
+            const categoryFromData = btn.dataset.category !== undefined ? btn.dataset.category : null;
+            const targetCategory = categoryFromData !== null ? categoryFromData : categoryFromParam;
+
+            // 3. Category Filter Action (from banner button or category chip)
+            if (targetCategory !== null || href.includes('#katalog')) {
+                e.preventDefault();
+
+                // Apply category filter instantly
+                const catId = targetCategory ? targetCategory : '';
+                const catName = btn.dataset.categoryName || btn.textContent.trim();
+                window.filterCatalogByCategory(catId, catId ? catName : '');
+
+                // Smooth Scroll to #katalog without page reload
+                const katalogEl = document.getElementById('katalog');
+                if (katalogEl) {
+                    const navbar = document.querySelector('.app-navbar');
+                    const navHeight = navbar ? navbar.offsetHeight : 70;
+                    const targetPosition = katalogEl.getBoundingClientRect().top + window.pageYOffset - (navHeight + 20);
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // Pulse highlight catalog card
+                    katalogEl.classList.remove('catalog-focus-highlight');
+                    void katalogEl.offsetWidth; // force reflow
+                    katalogEl.classList.add('catalog-focus-highlight');
+                    setTimeout(function () {
+                        katalogEl.classList.remove('catalog-focus-highlight');
+                    }, 1800);
+                }
+                return;
+            }
+
+            // 4. Book Card Anchor Action (e.g. #book-2)
+            if (href.includes('#book-')) {
                 const targetId = href.split('#')[1];
                 if (targetId) {
                     const targetEl = document.getElementById(targetId);
@@ -469,7 +573,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             behavior: 'smooth'
                         });
 
-                        // Highlight the targeted book card with special glow animation
                         const bookCard = targetEl.querySelector('.book-card') || (targetEl.classList.contains('book-card') ? targetEl : null);
                         if (bookCard) {
                             document.querySelectorAll('.book-highlight-glow').forEach(el => el.classList.remove('book-highlight-glow'));
@@ -479,21 +582,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             setTimeout(function () {
                                 bookCard.classList.remove('book-highlight-glow');
                             }, 3200);
-                        } else {
-                            // General catalog card pulse
-                            targetEl.classList.remove('catalog-focus-highlight');
-                            void targetEl.offsetWidth; // force reflow
-                            targetEl.classList.add('catalog-focus-highlight');
-                            setTimeout(function () {
-                                targetEl.classList.remove('catalog-focus-highlight');
-                            }, 1800);
-
-                            const searchInput = targetEl.querySelector('input[name="q"]');
-                            if (searchInput) {
-                                setTimeout(function () {
-                                    searchInput.focus({ preventScroll: true });
-                                }, 500);
-                            }
                         }
                     }
                 }

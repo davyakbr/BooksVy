@@ -175,15 +175,18 @@
         </form>
 
         <!-- Kategori Filter Chips -->
-        <div class="d-flex flex-wrap gap-2 mt-3 pt-3 border-top">
+        <div class="d-flex flex-wrap gap-2 mt-3 pt-3 border-top" id="categoryChips">
             <span class="small text-muted align-self-center me-1">Kategori:</span>
             <a href="{{ route('home', array_filter(['q' => $search ?? ''])) }}#katalog" 
-               class="badge rounded-pill px-3 py-2 text-decoration-none {{ empty($categoryId ?? null) ? 'bg-primary text-white' : 'bg-light text-secondary border' }}">
+               data-category=""
+               class="badge rounded-pill px-3 py-2 text-decoration-none category-chip {{ empty($categoryId ?? null) ? 'bg-primary text-white' : 'bg-light text-secondary border' }}">
                 Semua
             </a>
             @foreach ($categories as $cat)
                 <a href="{{ route('home', array_filter(['category' => $cat->id, 'q' => $search ?? ''])) }}#katalog" 
-                   class="badge rounded-pill px-3 py-2 text-decoration-none {{ ($categoryId ?? null) == $cat->id ? 'bg-primary text-white' : 'bg-light text-secondary border' }}">
+                   data-category="{{ $cat->id }}"
+                   data-category-name="{{ $cat->name }}"
+                   class="badge rounded-pill px-3 py-2 text-decoration-none category-chip {{ ($categoryId ?? null) == $cat->id ? 'bg-primary text-white' : 'bg-light text-secondary border' }}">
                     {{ $cat->name }}
                 </a>
             @endforeach
@@ -194,7 +197,7 @@
 <!-- Header Hasil Pencarian & Jumlah Data -->
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h4 class="fw-bold mb-1">
+        <h4 class="fw-bold mb-1" id="catalogHeading">
             @if (!empty($search ?? ''))
                 Hasil Pencarian: "{{ $search }}"
             @elseif (!empty($categoryId ?? null))
@@ -206,11 +209,22 @@
                 Semua Koleksi Buku
             @endif
         </h4>
-        <p class="text-muted small mb-0">Menampilkan {{ count($books) }} judul buku di BooksVy</p>
+        <p class="text-muted small mb-0" id="catalogCount">Menampilkan {{ count($books) }} judul buku di BooksVy</p>
     </div>
 </div>
 
 <!-- Grid Katalog Buku -->
+<div id="noBooksFound" class="card border-0 shadow-sm rounded-4 text-center py-5 my-4 d-none w-100">
+    <div class="card-body">
+        <i class="bi bi-search text-muted" style="font-size: 3.5rem;"></i>
+        <h5 class="fw-bold mt-3">Tidak Ada Buku dalam Kategori Ini</h5>
+        <p class="text-muted small mb-3">Belum ada buku yang tersedia untuk kategori yang dipilih.</p>
+        <button type="button" class="btn btn-primary rounded-pill px-4" onclick="window.filterCatalogByCategory('')">
+            <i class="bi bi-arrow-counterclockwise me-1"></i> Tampilkan Semua Koleksi
+        </button>
+    </div>
+</div>
+
 @if (empty($books) || count($books) === 0)
     <div class="card border-0 shadow-sm rounded-4 text-center py-5 my-4">
         <div class="card-body">
@@ -223,10 +237,10 @@
         </div>
     </div>
 @else
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 g-4 mb-5">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 g-4 mb-5" id="booksGrid">
         @foreach ($books as $b)
             @php $isBookOutOfStock = ($b->stock <= 0); @endphp
-            <div class="col" id="book-{{ $b->id }}">
+            <div class="col book-item" id="book-{{ $b->id }}" data-category="{{ $b->category_id }}" data-category-name="{{ $b->category->name ?? 'Umum' }}">
                 <div class="book-card h-100 {{ $isBookOutOfStock ? 'book-card-out-of-stock' : '' }}">
                     <div class="book-cover-wrapper">
                         {!! bookCoverHtml($b->cover_image, $b->title, 'card') !!}
