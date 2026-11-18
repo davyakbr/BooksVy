@@ -427,4 +427,57 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     });
+
+    // 6. Enhanced Banner Button Click & Micro-Interactions (Smooth Scroll, Ripple & Focus)
+    const heroBannerButtons = document.querySelectorAll('.hero-banner-btn, .hero-carousel a[href*="#"]');
+    heroBannerButtons.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            // Ripple effect on click
+            const rect = btn.getBoundingClientRect();
+            const ripple = document.createElement('span');
+            ripple.className = 'hero-btn-ripple';
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+            ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+            btn.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+
+            // Smooth Scroll if href is an in-page anchor (#katalog or similar)
+            const href = btn.getAttribute('href');
+            if (href && (href.startsWith('#') || href.includes('#'))) {
+                const targetId = href.split('#')[1];
+                if (targetId) {
+                    const targetEl = document.getElementById(targetId);
+                    if (targetEl) {
+                        e.preventDefault();
+                        const navbar = document.querySelector('.app-navbar');
+                        const navHeight = navbar ? navbar.offsetHeight : 70;
+                        const targetPosition = targetEl.getBoundingClientRect().top + window.pageYOffset - (navHeight + 20);
+
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+
+                        // Highlight & focus catalog
+                        targetEl.classList.remove('catalog-focus-highlight');
+                        void targetEl.offsetWidth; // force reflow
+                        targetEl.classList.add('catalog-focus-highlight');
+                        setTimeout(function () {
+                            targetEl.classList.remove('catalog-focus-highlight');
+                        }, 1800);
+
+                        // Focus search field if navigating to catalog
+                        const searchInput = targetEl.querySelector('input[name="q"]');
+                        if (searchInput) {
+                            setTimeout(function () {
+                                searchInput.focus({ preventScroll: true });
+                            }, 500);
+                        }
+                    }
+                }
+            }
+        });
+    });
 });

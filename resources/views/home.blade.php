@@ -45,12 +45,12 @@
                             @endif
                             <div class="d-flex flex-wrap gap-3">
                                 @if($bn->btn1_label)
-                                    <a href="{{ $bn->btn1_url ?? '#katalog' }}" class="btn btn-warning text-dark fw-bold rounded-pill px-4 py-2 shadow-sm">
+                                    <a href="{{ $bn->btn1_url ?? '#katalog' }}" class="btn btn-warning text-dark fw-bold rounded-pill px-4 py-2 shadow-sm hero-banner-btn hero-banner-btn-primary">
                                         <i class="bi bi-grid-fill me-1"></i> {{ $bn->btn1_label }}
                                     </a>
                                 @endif
                                 @if($bn->btn2_label)
-                                    <a href="{{ $bn->btn2_url ?? '#katalog' }}" class="btn btn-outline-light rounded-pill px-4 py-2">
+                                    <a href="{{ $bn->btn2_url ?? '#katalog' }}" class="btn btn-outline-light rounded-pill px-4 py-2 hero-banner-btn hero-banner-btn-secondary">
                                         <i class="bi bi-book me-1"></i> {{ $bn->btn2_label }}
                                     </a>
                                 @endif
