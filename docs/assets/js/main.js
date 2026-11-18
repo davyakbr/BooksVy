@@ -428,22 +428,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // 6. Enhanced Banner Button Click & Micro-Interactions (Smooth Scroll, Ripple & Focus)
-    const heroBannerButtons = document.querySelectorAll('.hero-banner-btn, .hero-carousel a[href*="#"]');
+    // 6. Enhanced Banner Button Click & Micro-Interactions (Direct to Book, Pause Carousel, Smooth Scroll)
+    const heroBannerButtons = document.querySelectorAll('.hero-banner-btn, .hero-carousel a[href*="#"], .hero-slide-img-box a');
     heroBannerButtons.forEach(function (btn) {
         btn.addEventListener('click', function (e) {
-            // Ripple effect on click
-            const rect = btn.getBoundingClientRect();
-            const ripple = document.createElement('span');
-            ripple.className = 'hero-btn-ripple';
-            const size = Math.max(rect.width, rect.height);
-            ripple.style.width = ripple.style.height = `${size}px`;
-            ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
-            ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
-            btn.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
+            // 1. Immediately pause carousel so it does NOT auto-slide away or reset to slide 1
+            const carouselEl = document.getElementById('booksVyHeroCarousel');
+            if (carouselEl && typeof bootstrap !== 'undefined' && bootstrap.Carousel) {
+                const carouselInstance = bootstrap.Carousel.getOrCreateInstance(carouselEl);
+                carouselInstance.pause();
+            }
 
-            // Smooth Scroll if href is an in-page anchor (#katalog or similar)
+            // 2. Ripple effect on button click
+            if (btn.classList.contains('hero-banner-btn') || btn.classList.contains('btn')) {
+                const rect = btn.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                ripple.className = 'hero-btn-ripple';
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+                ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+                btn.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            }
+
+            // 3. Smooth Scroll to book or catalog anchor without reloading page
             const href = btn.getAttribute('href');
             if (href && (href.startsWith('#') || href.includes('#'))) {
                 const targetId = href.split('#')[1];
@@ -453,27 +462,38 @@ document.addEventListener('DOMContentLoaded', function () {
                         e.preventDefault();
                         const navbar = document.querySelector('.app-navbar');
                         const navHeight = navbar ? navbar.offsetHeight : 70;
-                        const targetPosition = targetEl.getBoundingClientRect().top + window.pageYOffset - (navHeight + 20);
+                        const targetPosition = targetEl.getBoundingClientRect().top + window.pageYOffset - (navHeight + 25);
 
                         window.scrollTo({
                             top: targetPosition,
                             behavior: 'smooth'
                         });
 
-                        // Highlight & focus catalog
-                        targetEl.classList.remove('catalog-focus-highlight');
-                        void targetEl.offsetWidth; // force reflow
-                        targetEl.classList.add('catalog-focus-highlight');
-                        setTimeout(function () {
-                            targetEl.classList.remove('catalog-focus-highlight');
-                        }, 1800);
-
-                        // Focus search field if navigating to catalog
-                        const searchInput = targetEl.querySelector('input[name="q"]');
-                        if (searchInput) {
+                        // Highlight the targeted book card with special glow animation
+                        const bookCard = targetEl.querySelector('.book-card') || (targetEl.classList.contains('book-card') ? targetEl : null);
+                        if (bookCard) {
+                            document.querySelectorAll('.book-highlight-glow').forEach(el => el.classList.remove('book-highlight-glow'));
+                            bookCard.classList.remove('book-highlight-glow');
+                            void bookCard.offsetWidth; // force reflow
+                            bookCard.classList.add('book-highlight-glow');
                             setTimeout(function () {
-                                searchInput.focus({ preventScroll: true });
-                            }, 500);
+                                bookCard.classList.remove('book-highlight-glow');
+                            }, 3200);
+                        } else {
+                            // General catalog card pulse
+                            targetEl.classList.remove('catalog-focus-highlight');
+                            void targetEl.offsetWidth; // force reflow
+                            targetEl.classList.add('catalog-focus-highlight');
+                            setTimeout(function () {
+                                targetEl.classList.remove('catalog-focus-highlight');
+                            }, 1800);
+
+                            const searchInput = targetEl.querySelector('input[name="q"]');
+                            if (searchInput) {
+                                setTimeout(function () {
+                                    searchInput.focus({ preventScroll: true });
+                                }, 500);
+                            }
                         }
                     }
                 }

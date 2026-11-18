@@ -568,6 +568,34 @@ main.main-content {
     animation: catalogPulseGlow 1.8s ease-out forwards;
 }
 
+/* Book Card Target Glow & Pop Animation when clicked from banner */
+.book-highlight-glow {
+    animation: bookTargetGlowAnim 3s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+    position: relative;
+    z-index: 5;
+}
+
+@keyframes bookTargetGlowAnim {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.8), var(--bvy-shadow-md);
+    }
+    18% {
+        transform: scale(1.04);
+        box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.5), 0 16px 36px rgba(245, 158, 11, 0.35);
+        outline: 2px solid #f59e0b;
+    }
+    55% {
+        transform: scale(1.01);
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3), 0 10px 24px rgba(245, 158, 11, 0.2);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: var(--bvy-shadow-md);
+        outline: none;
+    }
+}
+
 @keyframes catalogPulseGlow {
     0% {
         box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6), var(--bvy-shadow-sm);

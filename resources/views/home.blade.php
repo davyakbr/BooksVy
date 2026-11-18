@@ -60,7 +60,9 @@
                         @if ($hasValidBannerImage)
                             <div class="col-lg-5 d-none d-lg-flex justify-content-center">
                                 <div class="hero-slide-img-box">
-                                    <img src="{{ asset('uploads/' . $bannerImg) }}" alt="{{ $bn->title }}" class="img-fluid hero-banner-photo shadow-lg rounded-4">
+                                    <a href="{{ $bn->btn1_url ?? '#katalog' }}" class="d-inline-block text-decoration-none" title="{{ $bn->btn1_label ?? 'Lihat Buku' }}">
+                                        <img src="{{ asset('uploads/' . $bannerImg) }}" alt="{{ $bn->title }}" class="img-fluid hero-banner-photo shadow-lg rounded-4">
+                                    </a>
                                 </div>
                             </div>
                         @endif
