@@ -78,9 +78,6 @@
                 @endif
             </a>
 
-            <a href="{{ route('admin.banners.index') }}" class="admin-sidebar-btn {{ request()->routeIs('admin.banners.*') ? 'active' : '' }}">
-                <span>Banner Promosi</span>
-            </a>
 
             <div class="admin-menu-label mt-4">AKSI CEPAT</div>
 

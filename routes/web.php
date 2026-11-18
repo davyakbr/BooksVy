@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AboutController;
-use App\Http\Controllers\Admin\BannerController as AdminBannerController;
 use App\Http\Controllers\Admin\BookController as AdminBookController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
@@ -66,9 +65,6 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{id}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');
-
-    Route::resource('banners', AdminBannerController::class)->except(['create', 'show', 'edit']);
-    Route::post('/banners/{id}/toggle', [AdminBannerController::class, 'toggle'])->name('banners.toggle');
 
     Route::resource('messages', AdminMessageController::class)->only(['index', 'show', 'destroy']);
     Route::post('/messages/{id}/reply', [AdminMessageController::class, 'reply'])->name('messages.reply');
