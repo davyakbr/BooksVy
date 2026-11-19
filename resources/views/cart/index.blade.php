@@ -210,7 +210,7 @@
 
         <!-- Kolom Ringkasan Belanja -->
         <div class="col-lg-4">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white sticky-top" style="top: 90px;">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white cart-summary-card">
                 <h5 class="fw-bold mb-3">Ringkasan Tagihan</h5>
 
                 <form method="POST" action="{{ route('checkout.index') }}" id="checkoutForm">

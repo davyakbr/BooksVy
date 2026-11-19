@@ -131,7 +131,7 @@
 
         <!-- Kolom Ringkasan Pesanan & Tombol Konfirmasi -->
         <div class="col-lg-5">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white sticky-top" style="top: 90px;">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white checkout-summary-card">
                 <h5 class="fw-bold mb-3 d-flex align-items-center justify-content-between">
                     <span>Ringkasan Pesanan</span>
                     <span class="badge bg-light text-secondary border">{{ $totalCount }} Buku</span>
