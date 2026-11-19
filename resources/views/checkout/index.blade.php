@@ -121,11 +121,6 @@
                         <i class="bi bi-qr-code-scan fs-4 text-primary"></i>
                     </label>
                 </div>
-
-                <div class="alert alert-warning border-0 small rounded-3 mb-0">
-                    <i class="bi bi-info-circle-fill me-1"></i>
-                    <strong>Penting:</strong> BooksVy menerapkan sistem pembayaran <em>Payment at Delivery</em> di mana paket buku tidak menggunakan sistem bayar di tempat (COD biasa), melainkan pembayaran diverifikasi sebelum barang diserahkan ke jasa kurir.
-                </div>
             </div>
         </div>
 
