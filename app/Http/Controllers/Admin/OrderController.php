@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Book;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -54,11 +56,44 @@ class OrderController extends Controller
             'order_status'   => 'required|in:Menunggu Konfirmasi,Sedang Diproses,Sedang Dikirim,Selesai,Dibatalkan',
         ]);
 
-        $order->update([
-            'payment_status' => $validated['payment_status'],
-            'order_status'   => $validated['order_status'],
-        ]);
+        $oldOrderStatus = $order->order_status;
+        $newOrderStatus = $validated['order_status'];
 
-        return back()->with('success', 'Status pesanan #' . $order->order_number . ' berhasil diperbarui.');
+        try {
+            DB::transaction(function () use ($order, $validated, $oldOrderStatus, $newOrderStatus) {
+                // 1. Jika pesanan diubah ke "Dibatalkan" dari status aktif, kembalikan stok buku ke katalog
+                if ($newOrderStatus === 'Dibatalkan' && $oldOrderStatus !== 'Dibatalkan') {
+                    foreach ($order->items as $item) {
+                        if ($item->book_id) {
+                            Book::where('id', $item->book_id)->increment('stock', $item->quantity);
+                        }
+                    }
+                }
+
+                // 2. Jika pesanan sebelumnya "Dibatalkan" lalu diaktifkan kembali, kurangi kembali stoknya jika cukup
+                if ($oldOrderStatus === 'Dibatalkan' && $newOrderStatus !== 'Dibatalkan') {
+                    foreach ($order->items as $item) {
+                        if ($item->book_id) {
+                            $book = Book::where('id', $item->book_id)->lockForUpdate()->first();
+                            if ($book) {
+                                if ($book->stock < $item->quantity) {
+                                    throw new \Exception("Gagal mengaktifkan kembali pesanan! Stok buku '{$book->title}' tidak mencukupi (Sisa stok: {$book->stock}, Dibutuhkan: {$item->quantity}).");
+                                }
+                                $book->decrement('stock', $item->quantity);
+                            }
+                        }
+                    }
+                }
+
+                $order->update([
+                    'payment_status' => $validated['payment_status'],
+                    'order_status'   => $newOrderStatus,
+                ]);
+            });
+
+            return back()->with('success', 'Status pesanan #' . $order->order_number . ' berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return back()->with('danger', $e->getMessage());
+        }
     }
 }

@@ -36,6 +36,11 @@ class Book extends Model
         return $this->belongsTo(Category::class, 'category_id');
     }
 
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class, 'book_id');
+    }
+
     // Relasi Many-to-Many: Satu Buku bisa berada di banyak Order melalui tabel pivot order_items
     public function orders()
     {

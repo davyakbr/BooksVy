@@ -77,13 +77,14 @@ class CheckoutController extends Controller
     {
         $validated = $request->validate([
             'recipient_name'   => 'required|string|max:100',
-            'recipient_phone'  => 'required|string|max:25',
+            'recipient_phone'  => ['required', 'string', 'max:25', 'regex:/^[0-9+\-\s]{8,20}$/'],
             'shipping_address' => 'required|string',
             'payment_channel'  => 'required|string',
             'notes'            => 'nullable|string',
         ], [
             'recipient_name.required'   => 'Nama penerima wajib diisi.',
             'recipient_phone.required'  => 'Nomor telepon/WhatsApp penerima wajib diisi.',
+            'recipient_phone.regex'     => 'Nomor WhatsApp / telepon harus berupa nomor yang valid (minimal 8 digit angka).',
             'shipping_address.required' => 'Alamat pengiriman lengkap wajib diisi.',
         ]);
 
@@ -118,14 +119,19 @@ class CheckoutController extends Controller
         }
 
         try {
-            $order = DB::transaction(function () use ($validated, $cartItems, $totalPrice) {
-                // Periksa stok dengan lock FOR UPDATE
+            $order = DB::transaction(function () use ($validated, $cartItems) {
+                // Periksa stok dan ambil harga riil terkini langsung dari database dengan lock FOR UPDATE
+                $actualBooks = [];
+                $realTotalPrice = 0;
+
                 foreach ($cartItems as $bookId => $item) {
                     $book = Book::where('id', $bookId)->lockForUpdate()->first();
                     if (!$book || $book->stock < $item['qty']) {
                         $avail = $book ? $book->stock : 0;
                         throw new \Exception("Stok untuk buku '{$item['title']}' tidak mencukupi (Tersedia: {$avail}, Diminta: {$item['qty']}).");
                     }
+                    $actualBooks[$bookId] = $book;
+                    $realTotalPrice += ((float)$book->price * $item['qty']);
                 }
 
                 $orderNumber = 'BVY-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -5));
@@ -140,24 +146,26 @@ class CheckoutController extends Controller
                     'payment_method'   => $paymentDesc,
                     'payment_status'   => 'Lunas',
                     'order_status'     => 'Sedang Diproses',
-                    'total_amount'     => $totalPrice,
+                    'total_amount'     => $realTotalPrice,
                     'notes'            => $validated['notes'] ?? null,
                     'created_at'       => now(),
                 ]);
 
                 foreach ($cartItems as $bookId => $item) {
-                    $subtotal = $item['price'] * $item['qty'];
+                    $book = $actualBooks[$bookId];
+                    $currentRealPrice = (float)$book->price;
+                    $subtotal = $currentRealPrice * $item['qty'];
 
                     OrderItem::create([
                         'order_id'   => $order->id,
                         'book_id'    => $bookId,
-                        'book_title' => $item['title'],
-                        'price'      => $item['price'],
+                        'book_title' => $book->title,
+                        'price'      => $currentRealPrice,
                         'quantity'   => $item['qty'],
                         'subtotal'   => $subtotal,
                     ]);
 
-                    Book::where('id', $bookId)->decrement('stock', $item['qty']);
+                    $book->decrement('stock', $item['qty']);
                 }
 
                 // Hapus HANYA item yang di-checkout dari session cart

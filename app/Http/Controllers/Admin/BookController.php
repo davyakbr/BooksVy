@@ -48,10 +48,12 @@ class BookController extends Controller
             'author'      => 'required|string|max:150',
             'publisher'   => 'nullable|string|max:150',
             'year'        => 'nullable|integer|min:1900|max:' . (date('Y') + 1),
-            'price'       => 'required|numeric|min:0',
+            'price'       => 'required|numeric|min:100',
             'stock'       => 'required|integer|min:0',
             'description' => 'nullable|string',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ], [
+            'price.min'   => 'Harga buku harus lebih besar dari Rp 0 (minimal Rp 100).',
         ]);
 
         $cleanTitle = trim($validated['title']);
@@ -118,10 +120,12 @@ class BookController extends Controller
             'author'      => 'required|string|max:150',
             'publisher'   => 'nullable|string|max:150',
             'year'        => 'nullable|integer|min:1900|max:' . (date('Y') + 1),
-            'price'       => 'required|numeric|min:0',
+            'price'       => 'required|numeric|min:100',
             'stock'       => 'required|integer|min:0',
             'description' => 'nullable|string',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ], [
+            'price.min'   => 'Harga buku harus lebih besar dari Rp 0 (minimal Rp 100).',
         ]);
 
         $cleanTitle = trim($validated['title']);
@@ -182,6 +186,11 @@ class BookController extends Controller
         // Validasi: Buku tidak dapat dihapus jika masih ada stok
         if ($book->stock > 0) {
             return back()->with('danger', 'Buku "' . $title . '" tidak dapat dihapus karena masih memiliki stok (' . $book->stock . ' unit). Harap kosongkan stok terlebih dahulu jika ingin menghapus buku ini.');
+        }
+
+        // Validasi: Buku tidak dapat dihapus jika sudah memiliki riwayat transaksi/pesanan dari pelanggan
+        if ($book->orderItems()->exists()) {
+            return back()->with('danger', 'Buku "' . $title . '" tidak dapat dihapus karena sudah memiliki riwayat transaksi pembelian oleh pelanggan. Untuk menghentikan penjualan, Anda cukup memastikan stok buku tetap 0 unit.');
         }
 
         // Hapus file cover buku dari public/uploads jika ada dan bukan default
