@@ -78,7 +78,6 @@
                 @endif
             </a>
 
-
             <div class="admin-menu-label mt-4">AKSI CEPAT</div>
 
             <!-- Tombol Tambah Buku di Samping -->
