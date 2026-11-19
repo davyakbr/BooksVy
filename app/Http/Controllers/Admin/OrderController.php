@@ -58,9 +58,21 @@ class OrderController extends Controller
 
         $oldOrderStatus = $order->order_status;
         $newOrderStatus = $validated['order_status'];
+        $newPaymentStatus = $validated['payment_status'];
+
+        // Fitur Sinkronisasi Otomatis Antar-Status (Smart Auto-Sync):
+        // 1. Jika status pesanan dibatalkan atau status pembayaran dibatalkan, keduanya disinkronkan ke "Dibatalkan"
+        if ($newOrderStatus === 'Dibatalkan' || $newPaymentStatus === 'Dibatalkan') {
+            $newOrderStatus = 'Dibatalkan';
+            $newPaymentStatus = 'Dibatalkan';
+        }
+        // 2. Jika pengiriman sudah berstatus "Selesai", pastikan status pembayaran adalah "Lunas"
+        elseif ($newOrderStatus === 'Selesai') {
+            $newPaymentStatus = 'Lunas';
+        }
 
         try {
-            DB::transaction(function () use ($order, $validated, $oldOrderStatus, $newOrderStatus) {
+            DB::transaction(function () use ($order, $newPaymentStatus, $oldOrderStatus, $newOrderStatus) {
                 // 1. Jika pesanan diubah ke "Dibatalkan" dari status aktif, kembalikan stok buku ke katalog
                 if ($newOrderStatus === 'Dibatalkan' && $oldOrderStatus !== 'Dibatalkan') {
                     foreach ($order->items as $item) {
@@ -86,7 +98,7 @@ class OrderController extends Controller
                 }
 
                 $order->update([
-                    'payment_status' => $validated['payment_status'],
+                    'payment_status' => $newPaymentStatus,
                     'order_status'   => $newOrderStatus,
                 ]);
             });
