@@ -18,18 +18,23 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes - BooksVy Modern Online Bookstore
+| Web Routes - BooksVy Toko Buku Online
 |--------------------------------------------------------------------------
+| Seluruh alur URL aplikasi diatur di file ini.
 */
 
-// Public Routes
+// ==========================================
+// 1. RUTE PUBLIK (Dapat diakses siapa saja)
+// ==========================================
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show');
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
-// Cart Routes
+// ==========================================
+// 2. RUTE KERANJANG BELANJA (CART)
+// ==========================================
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/quick-add', [CartController::class, 'quickAdd'])->name('cart.quick-add');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
@@ -37,7 +42,9 @@ Route::post('/cart/update', [CartController::class, 'update'])->name('cart.updat
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
-// Authentication Routes (Khusus Pengguna yang Belum Login)
+// ==========================================
+// 3. RUTE AUTENTIKASI (LOGIN & REGISTER)
+// ==========================================
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
@@ -46,7 +53,9 @@ Route::middleware('guest')->group(function () {
 });
 Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-// Customer Protected Routes (Khusus Pembeli / Customer yang Sudah Login)
+// ==========================================
+// 4. RUTE PELANGGAN (Wajib Login sebagai User)
+// ==========================================
 Route::middleware(['auth', 'customer'])->group(function () {
     Route::match(['get', 'post'], '/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
@@ -55,19 +64,28 @@ Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/orders/{id}/success', [OrderController::class, 'success'])->name('orders.success');
 });
 
-// Admin Protected Routes (Diproteksi Penuh oleh Middleware 'admin' / IsAdmin)
+// ==========================================
+// 5. RUTE PANEL ADMINISTRATOR (/admin/*)
+// Diproteksi oleh Middleware 'admin' (Hanya role admin)
+// ==========================================
 Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 
+    // Manajemen Buku (CRUD)
     Route::resource('books', AdminBookController::class);
+
+    // Manajemen Kategori
     Route::resource('categories', AdminCategoryController::class)->except(['create', 'show', 'edit']);
 
+    // Manajemen Pesanan & Pembaruan Status
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{id}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');
 
+    // Manajemen Pesan Kontak / Tiket Bantuan
     Route::resource('messages', AdminMessageController::class)->only(['index', 'show', 'destroy']);
     Route::post('/messages/{id}/reply', [AdminMessageController::class, 'reply'])->name('messages.reply');
 
+    // Manajemen Pengguna
     Route::resource('users', AdminUserController::class)->only(['index', 'destroy']);
 });

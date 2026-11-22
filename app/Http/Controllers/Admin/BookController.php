@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
+    /**
+     * Menampilkan daftar buku di katalog admin dengan fitur pencarian & filter kategori.
+     */
     public function index(Request $request)
     {
         $search = trim($request->get('q', ''));
@@ -16,6 +19,7 @@ class BookController extends Controller
 
         $query = Book::with('category');
 
+        // Filter Pencarian Judul, Penulis, atau Penerbit
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
@@ -24,6 +28,7 @@ class BookController extends Controller
             });
         }
 
+        // Filter Kategori
         if (!empty($categoryId) && is_numeric($categoryId)) {
             $query->where('category_id', $categoryId);
         }
@@ -34,14 +39,21 @@ class BookController extends Controller
         return view('admin.books.index', compact('books', 'categories', 'search', 'categoryId'));
     }
 
+    /**
+     * Menampilkan form tambah buku baru.
+     */
     public function create()
     {
         $categories = Category::orderBy('name', 'asc')->get();
         return view('admin.books.create', compact('categories'));
     }
 
+    /**
+     * Menyimpan data buku baru ke database.
+     */
     public function store(Request $request)
     {
+        // 1. Validasi Input Form
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
             'title'       => 'required|string|max:255',
@@ -59,27 +71,16 @@ class BookController extends Controller
         $cleanTitle = trim($validated['title']);
         $cleanAuthor = trim($validated['author']);
 
-        // 1. Cek jika judul dan penulis sama persis dengan buku yang sudah ada di katalog (case-insensitive & trim)
-        $exactDuplicate = Book::whereRaw('LOWER(TRIM(title)) = ?', [strtolower($cleanTitle)])
-            ->whereRaw('LOWER(TRIM(author)) = ?', [strtolower($cleanAuthor)])
-            ->first();
-
-        if ($exactDuplicate) {
+        // 2. Cek apakah judul buku sudah pernah terdaftar
+        $existingBook = Book::whereRaw('LOWER(TRIM(title)) = ?', [strtolower($cleanTitle)])->first();
+        if ($existingBook) {
             return back()
                 ->withInput()
-                ->with('danger', 'Gagal menambahkan! Buku "' . $cleanTitle . '" oleh penulis "' . $cleanAuthor . '" sudah terdaftar di katalog. Anda tidak dapat menambahkan buku yang sama persis.')
-                ->withErrors(['title' => 'Buku dengan judul dan penulis ini sudah terdaftar di katalog. Silakan perbarui stok buku yang ada.']);
+                ->with('danger', 'Gagal menambahkan! Judul buku "' . $cleanTitle . '" sudah ada di katalog. Silakan periksa kembali atau perbarui stok buku yang ada.')
+                ->withErrors(['title' => 'Judul buku ini sudah terdaftar di katalog.']);
         }
 
-        // 2. Cek jika judul buku sudah digunakan di katalog
-        $titleDuplicate = Book::whereRaw('LOWER(TRIM(title)) = ?', [strtolower($cleanTitle)])->first();
-        if ($titleDuplicate) {
-            return back()
-                ->withInput()
-                ->with('danger', 'Gagal menambahkan! Judul buku "' . $cleanTitle . '" sudah ada di katalog (oleh penulis: ' . $titleDuplicate->author . '). Harap periksa kembali.')
-                ->withErrors(['title' => 'Judul buku ini sudah terdaftar di katalog. Silakan gunakan judul yang berbeda.']);
-        }
-
+        // 3. Upload File Sampul Buku (jika ada)
         $coverFilename = null;
         if ($request->hasFile('cover_image')) {
             $file = $request->file('cover_image');
@@ -87,6 +88,7 @@ class BookController extends Controller
             $file->move(public_path('uploads'), $coverFilename);
         }
 
+        // 4. Simpan ke Database
         Book::create([
             'category_id' => $validated['category_id'],
             'title'       => $validated['title'],
@@ -103,6 +105,9 @@ class BookController extends Controller
         return redirect()->route('admin.books.index')->with('success', 'Buku baru berhasil ditambahkan ke katalog!');
     }
 
+    /**
+     * Menampilkan form edit buku.
+     */
     public function edit($id)
     {
         $book = Book::findOrFail($id);
@@ -110,10 +115,14 @@ class BookController extends Controller
         return view('admin.books.edit', compact('book', 'categories'));
     }
 
+    /**
+     * Memperbarui data buku di database.
+     */
     public function update(Request $request, $id)
     {
         $book = Book::findOrFail($id);
 
+        // 1. Validasi Input Form
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
             'title'       => 'required|string|max:255',
@@ -129,22 +138,8 @@ class BookController extends Controller
         ]);
 
         $cleanTitle = trim($validated['title']);
-        $cleanAuthor = trim($validated['author']);
 
-        // 1. Cek jika judul dan penulis sama persis dengan buku lain saat edit
-        $exactDuplicate = Book::where('id', '!=', $id)
-            ->whereRaw('LOWER(TRIM(title)) = ?', [strtolower($cleanTitle)])
-            ->whereRaw('LOWER(TRIM(author)) = ?', [strtolower($cleanAuthor)])
-            ->first();
-
-        if ($exactDuplicate) {
-            return back()
-                ->withInput()
-                ->with('danger', 'Gagal memperbarui! Buku "' . $cleanTitle . '" oleh penulis "' . $cleanAuthor . '" sudah ada di katalog.')
-                ->withErrors(['title' => 'Buku dengan judul dan penulis ini sudah terdaftar di katalog.']);
-        }
-
-        // 2. Cek jika judul sudah dipakai oleh buku lain
+        // 2. Cek apakah judul buku digunakan oleh buku lain selain buku ini
         $titleDuplicate = Book::where('id', '!=', $id)
             ->whereRaw('LOWER(TRIM(title)) = ?', [strtolower($cleanTitle)])
             ->first();
@@ -156,13 +151,23 @@ class BookController extends Controller
                 ->withErrors(['title' => 'Judul buku ini sudah terdaftar di katalog.']);
         }
 
+        // 3. Upload File Sampul Baru jika diunggah
         $coverFilename = $book->cover_image;
         if ($request->hasFile('cover_image')) {
             $file = $request->file('cover_image');
             $coverFilename = 'book_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads'), $coverFilename);
+
+            // Hapus file gambar lama jika ada
+            if ($book->cover_image && $book->cover_image !== 'default_book.png') {
+                $oldPath = public_path('uploads/' . $book->cover_image);
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
+            }
         }
 
+        // 4. Update Data Buku
         $book->update([
             'category_id' => $validated['category_id'],
             'title'       => $validated['title'],
@@ -178,22 +183,25 @@ class BookController extends Controller
         return redirect()->route('admin.books.index')->with('success', 'Data buku "' . $book->title . '" berhasil diperbarui!');
     }
 
+    /**
+     * Menghapus buku dari katalog dengan proteksi integritas transaksi.
+     */
     public function destroy($id)
     {
         $book = Book::findOrFail($id);
         $title = $book->title;
 
-        // Validasi: Buku tidak dapat dihapus jika masih ada stok
+        // Proteksi 1: Tidak bisa dihapus jika stok masih ada
         if ($book->stock > 0) {
-            return back()->with('danger', 'Buku "' . $title . '" tidak dapat dihapus karena masih memiliki stok (' . $book->stock . ' unit). Harap kosongkan stok terlebih dahulu jika ingin menghapus buku ini.');
+            return back()->with('danger', 'Buku "' . $title . '" tidak dapat dihapus karena masih memiliki sisa stok (' . $book->stock . ' unit).');
         }
 
-        // Validasi: Buku tidak dapat dihapus jika sudah memiliki riwayat transaksi/pesanan dari pelanggan
+        // Proteksi 2: Tidak bisa dihapus jika sudah memiliki riwayat transaksi pelanggan
         if ($book->orderItems()->exists()) {
-            return back()->with('danger', 'Buku "' . $title . '" tidak dapat dihapus karena sudah memiliki riwayat transaksi pembelian oleh pelanggan. Untuk menghentikan penjualan, Anda cukup memastikan stok buku tetap 0 unit.');
+            return back()->with('danger', 'Buku "' . $title . '" tidak dapat dihapus karena sudah memiliki riwayat transaksi pesanan pelanggan.');
         }
 
-        // Hapus file cover buku dari public/uploads jika ada dan bukan default
+        // Hapus file cover jika ada
         if ($book->cover_image && $book->cover_image !== 'default_book.png') {
             $coverPath = public_path('uploads/' . $book->cover_image);
             if (file_exists($coverPath)) {

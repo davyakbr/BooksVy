@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+    /**
+     * Menampilkan daftar pesanan masuk dengan filter status dan pencarian invoice/nama/telepon.
+     */
     public function index(Request $request)
     {
         $status = $request->get('status');
@@ -17,10 +20,12 @@ class OrderController extends Controller
 
         $query = Order::with('user');
 
+        // Filter Status Pesanan
         if (!empty($status)) {
             $query->where('order_status', $status);
         }
 
+        // Pencarian Kata Kunci
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('order_number', 'like', "%{$search}%")
@@ -34,6 +39,9 @@ class OrderController extends Controller
         return view('admin.orders.index', compact('orders', 'status', 'search'));
     }
 
+    /**
+     * Menampilkan halaman detail spesifik pesanan.
+     */
     public function show($id)
     {
         $order = Order::with(['user', 'items.book'])->findOrFail($id);
@@ -42,11 +50,14 @@ class OrderController extends Controller
         return view('admin.orders.show', compact('order', 'isCompleted'));
     }
 
+    /**
+     * Memperbarui status pesanan & status pembayaran secara tersinkronisasi.
+     */
     public function updateStatus(Request $request, $id)
     {
         $order = Order::findOrFail($id);
 
-        // Jika status pengiriman sudah selesai, kunci permanen dan tolak perubahan
+        // Jika pesanan sudah Selesai, kunci status secara permanen
         if ($order->order_status === 'Selesai') {
             return back()->with('warning', 'Pesanan ini sudah berstatus "Selesai" dan tidak dapat diubah lagi.');
         }
@@ -60,20 +71,22 @@ class OrderController extends Controller
         $newOrderStatus = $validated['order_status'];
         $newPaymentStatus = $validated['payment_status'];
 
-        // Fitur Sinkronisasi Otomatis Antar-Status (Smart Auto-Sync):
-        // 1. Jika status pesanan dibatalkan atau status pembayaran dibatalkan, keduanya disinkronkan ke "Dibatalkan"
+        // Fitur Smart Auto-Sync:
+        // 1. Jika pesanan dibatalkan (atau pembayaran dibatalkan), keduanya menjadi "Dibatalkan"
         if ($newOrderStatus === 'Dibatalkan' || $newPaymentStatus === 'Dibatalkan') {
             $newOrderStatus = 'Dibatalkan';
             $newPaymentStatus = 'Dibatalkan';
         }
-        // 2. Jika pengiriman sudah berstatus "Selesai", pastikan status pembayaran adalah "Lunas"
+        // 2. Jika pengiriman sudah "Selesai", status pembayaran dipastikan "Lunas"
         elseif ($newOrderStatus === 'Selesai') {
             $newPaymentStatus = 'Lunas';
         }
 
         try {
+            // Gunakan Transaction untuk menjamin perubahan status & manajemen stok berjalan aman
             DB::transaction(function () use ($order, $newPaymentStatus, $oldOrderStatus, $newOrderStatus) {
-                // 1. Jika pesanan diubah ke "Dibatalkan" dari status aktif, kembalikan stok buku ke katalog
+                
+                // Kasus A: Jika pesanan dibatalkan, kembalikan stok buku ke katalog
                 if ($newOrderStatus === 'Dibatalkan' && $oldOrderStatus !== 'Dibatalkan') {
                     foreach ($order->items as $item) {
                         if ($item->book_id) {
@@ -82,14 +95,14 @@ class OrderController extends Controller
                     }
                 }
 
-                // 2. Jika pesanan sebelumnya "Dibatalkan" lalu diaktifkan kembali, kurangi kembali stoknya jika cukup
+                // Kasus B: Jika pesanan sebelumnya batal lalu diaktifkan kembali, kurangi kembali stoknya jika cukup
                 if ($oldOrderStatus === 'Dibatalkan' && $newOrderStatus !== 'Dibatalkan') {
                     foreach ($order->items as $item) {
                         if ($item->book_id) {
                             $book = Book::where('id', $item->book_id)->lockForUpdate()->first();
                             if ($book) {
                                 if ($book->stock < $item->quantity) {
-                                    throw new \Exception("Gagal mengaktifkan kembali pesanan! Stok buku '{$book->title}' tidak mencukupi (Sisa stok: {$book->stock}, Dibutuhkan: {$item->quantity}).");
+                                    throw new \Exception("Stok buku '{$book->title}' tidak mencukupi untuk mengaktifkan kembali pesanan ini.");
                                 }
                                 $book->decrement('stock', $item->quantity);
                             }
@@ -97,6 +110,7 @@ class OrderController extends Controller
                     }
                 }
 
+                // Simpan pembaruan status ke database
                 $order->update([
                     'payment_status' => $newPaymentStatus,
                     'order_status'   => $newOrderStatus,

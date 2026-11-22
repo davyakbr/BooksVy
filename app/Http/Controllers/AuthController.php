@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserCart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    /**
+     * Menampilkan halaman login.
+     */
     public function showLogin()
     {
         if (Auth::check()) {
@@ -20,8 +23,12 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+    /**
+     * Memproses autentikasi pengguna (login) dan sinkronisasi keranjang belanja.
+     */
     public function login(Request $request)
     {
+        // 1. Validasi Input Login
         $credentials = $request->validate([
             'email'    => ['required', 'email'],
             'password' => ['required'],
@@ -31,38 +38,40 @@ class AuthController extends Controller
             'password.required' => 'Kata sandi wajib diisi.',
         ]);
 
+        // 2. Cek kecocokan Email & Password
         if (Auth::attempt($credentials)) {
             $guestCart = $request->session()->get('cart', []);
-            $request->session()->regenerate();
+            $request->session()->regenerate(); // Mencegah Session Fixation Attack
 
-            // Sinkronisasi keranjang belanja per user (dari tabel user_carts)
+            // 3. Sinkronisasi Keranjang Belanja User dari Database
             $userId = Auth::id();
-            $userCartRecord = \App\Models\UserCart::where('user_id', $userId)->first();
+            $userCartRecord = UserCart::where('user_id', $userId)->first();
             $userCart = ($userCartRecord && is_array($userCartRecord->cart_data)) ? $userCartRecord->cart_data : [];
 
+            // Gabungkan keranjang guest (tamu) ke keranjang user yang login
             if (!empty($guestCart)) {
-                foreach ($guestCart as $bId => $item) {
-                    if (isset($userCart[$bId])) {
-                        $userCart[$bId]['qty'] += (int)($item['qty'] ?? 1);
+                foreach ($guestCart as $bookId => $item) {
+                    if (isset($userCart[$bookId])) {
+                        $userCart[$bookId]['qty'] += (int)($item['qty'] ?? 1);
                     } else {
-                        $userCart[$bId] = $item;
+                        $userCart[$bookId] = $item;
                     }
                 }
             }
 
             session()->put('cart', $userCart);
-            \App\Models\UserCart::updateOrCreate(
+            UserCart::updateOrCreate(
                 ['user_id' => $userId],
                 ['cart_data' => $userCart]
             );
 
-            // Jika login sebagai Administrator
+            // 4. Pengalihan berdasarkan Hak Akses (Role)
             if (Auth::user()->isAdmin()) {
                 return redirect()->intended(route('admin.dashboard'))
                     ->with('success', 'Selamat datang di Panel Administrasi, ' . Auth::user()->name . '!');
             }
 
-            // Jika login sebagai Pelanggan Biasa tapi sebelumnya mencoba akses halaman admin
+            // Jika user biasa mencoba akses halaman admin sebelumnya
             $intended = session()->get('url.intended');
             if ($intended && str_contains($intended, '/admin')) {
                 session()->forget('url.intended');
@@ -79,6 +88,9 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
+    /**
+     * Menampilkan halaman formulir registrasi akun baru.
+     */
     public function showRegister()
     {
         if (Auth::check()) {
@@ -88,8 +100,12 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
+    /**
+     * Mendaftarkan akun pelanggan baru ke database.
+     */
     public function register(Request $request)
     {
+        // 1. Validasi Input Registrasi
         $validated = $request->validate([
             'name'     => ['required', 'string', 'max:100'],
             'email'    => ['required', 'string', 'email', 'max:100', 'unique:users,email'],
@@ -97,9 +113,9 @@ class AuthController extends Controller
                 'required',
                 'string',
                 'min:8',
-                'regex:/[A-Z]/',
-                'regex:/[0-9]/',
-                'regex:/[!@#$%^&*()\-_=+{};:,<.>]/',
+                'regex:/[A-Z]/', // Minimal 1 huruf besar
+                'regex:/[0-9]/', // Minimal 1 angka
+                'regex:/[!@#$%^&*()\-_=+{};:,<.>]/', // Minimal 1 simbol
                 'confirmed',
             ],
             'phone'    => ['nullable', 'string', 'max:25'],
@@ -114,16 +130,18 @@ class AuthController extends Controller
             'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
         ]);
 
+        // 2. Simpan Data User (Password otomatis di-hash via Model casts 'password' => 'hashed')
         $user = User::create([
             'name'       => $validated['name'],
             'email'      => $validated['email'],
-            'password'   => $validated['password'], // otomatis di-hash via User model cast
+            'password'   => $validated['password'],
             'phone'      => $validated['phone'] ?? null,
             'address'    => null,
             'role'       => 'user',
             'created_at' => now(),
         ]);
 
+        // 3. Langsung login setelah daftar
         Auth::login($user);
         $request->session()->regenerate();
 
@@ -131,6 +149,9 @@ class AuthController extends Controller
             ->with('success', 'Pendaftaran akun berhasil! Selamat datang di BooksVy, ' . $user->name . '.');
     }
 
+    /**
+     * Logout pengguna dan hancurkan sesi.
+     */
     public function logout(Request $request)
     {
         Auth::logout();
