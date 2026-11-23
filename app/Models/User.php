@@ -19,6 +19,7 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
+        'NIK',
         'address',
         'role',
         'created_at',

@@ -37,8 +37,8 @@
 
                 <div class="mb-3">
                     <label class="form-label small fw-semibold text-muted">Nomor WhatsApp / HP Aktif</label>
-                    <input type="tel" name="phone" class="form-control" value="{{ old('phone') }}" maxlength="15" inputmode="numeric" oninput="handlePhoneInput(this, 'regPhoneNotice')">
-                    <div id="regPhoneNotice" class="text-danger small mt-1 d-none"></div>
+                    <input type="tel" name="phone" class="form-control" value="{{ old('phone') }}" placeholder="Contoh: 081234567890" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 15);">
+                    <small class="text-muted" style="font-size: 0.72rem;">Hanya angka, maksimal 15 digit.</small>
                     @error('phone')
                         <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle-fill me-1"></i> {{ $message }}</div>
                     @enderror
