@@ -3,15 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\UserCart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    /**
-     * Menampilkan halaman login.
-     */
     public function showLogin()
     {
         if (Auth::check()) {
@@ -23,12 +20,8 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    /**
-     * Memproses autentikasi pengguna (login) dan sinkronisasi keranjang belanja.
-     */
     public function login(Request $request)
     {
-        // 1. Validasi Input Login
         $credentials = $request->validate([
             'email'    => ['required', 'email'],
             'password' => ['required'],
@@ -38,40 +31,38 @@ class AuthController extends Controller
             'password.required' => 'Kata sandi wajib diisi.',
         ]);
 
-        // 2. Cek kecocokan Email & Password
         if (Auth::attempt($credentials)) {
             $guestCart = $request->session()->get('cart', []);
-            $request->session()->regenerate(); // Mencegah Session Fixation Attack
+            $request->session()->regenerate();
 
-            // 3. Sinkronisasi Keranjang Belanja User dari Database
+            // Sinkronisasi keranjang belanja per user (dari tabel user_carts)
             $userId = Auth::id();
-            $userCartRecord = UserCart::where('user_id', $userId)->first();
+            $userCartRecord = \App\Models\UserCart::where('user_id', $userId)->first();
             $userCart = ($userCartRecord && is_array($userCartRecord->cart_data)) ? $userCartRecord->cart_data : [];
 
-            // Gabungkan keranjang guest (tamu) ke keranjang user yang login
             if (!empty($guestCart)) {
-                foreach ($guestCart as $bookId => $item) {
-                    if (isset($userCart[$bookId])) {
-                        $userCart[$bookId]['qty'] += (int)($item['qty'] ?? 1);
+                foreach ($guestCart as $bId => $item) {
+                    if (isset($userCart[$bId])) {
+                        $userCart[$bId]['qty'] += (int)($item['qty'] ?? 1);
                     } else {
-                        $userCart[$bookId] = $item;
+                        $userCart[$bId] = $item;
                     }
                 }
             }
 
             session()->put('cart', $userCart);
-            UserCart::updateOrCreate(
+            \App\Models\UserCart::updateOrCreate(
                 ['user_id' => $userId],
                 ['cart_data' => $userCart]
             );
 
-            // 4. Pengalihan berdasarkan Hak Akses (Role)
+            // Jika login sebagai Administrator
             if (Auth::user()->isAdmin()) {
                 return redirect()->intended(route('admin.dashboard'))
                     ->with('success', 'Selamat datang di Panel Administrasi, ' . Auth::user()->name . '!');
             }
 
-            // Jika user biasa mencoba akses halaman admin sebelumnya
+            // Jika login sebagai Pelanggan Biasa tapi sebelumnya mencoba akses halaman admin
             $intended = session()->get('url.intended');
             if ($intended && str_contains($intended, '/admin')) {
                 session()->forget('url.intended');
@@ -88,9 +79,6 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
-    /**
-     * Menampilkan halaman formulir registrasi akun baru.
-     */
     public function showRegister()
     {
         if (Auth::check()) {
@@ -100,12 +88,8 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    /**
-     * Mendaftarkan akun pelanggan baru ke database.
-     */
     public function register(Request $request)
     {
-        // 1. Validasi Input Registrasi
         $validated = $request->validate([
             'name'     => ['required', 'string', 'max:100'],
             'email'    => ['required', 'string', 'email', 'max:100', 'unique:users,email'],
@@ -113,35 +97,35 @@ class AuthController extends Controller
                 'required',
                 'string',
                 'min:8',
-                'regex:/[A-Z]/', // Minimal 1 huruf besar
-                'regex:/[0-9]/', // Minimal 1 angka
-                'regex:/[!@#$%^&*()\-_=+{};:,<.>]/', // Minimal 1 simbol
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[!@#$%^&*()\-_=+{};:,<.>]/',
                 'confirmed',
             ],
-            'phone'    => ['nullable', 'string', 'max:25'],
+            'phone'    => ['nullable', 'string', 'max:15', 'regex:/^[0-9]{8,15}$/'],
+            'NIK'      => ['nullable', 'string', 'max:16'],
         ], [
             'name.required'      => 'Nama lengkap wajib diisi.',
             'email.required'     => 'Alamat email wajib diisi.',
             'email.email'        => 'Format alamat email tidak valid.',
             'email.unique'       => 'Alamat email ini sudah terdaftar. Silakan gunakan email lain atau login.',
+            'phone.regex'        => 'Nomor WhatsApp / telepon hanya boleh berupa angka dan maksimal 15 digit.',
             'password.required'  => 'Kata sandi wajib diisi.',
             'password.min'       => 'Kata sandi minimal terdiri dari 8 karakter.',
             'password.regex'     => 'Kata sandi harus mengandung kombinasi huruf besar (kapital), angka, dan simbol unik (!@#$%^&*...).',
             'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
         ]);
 
-        // 2. Simpan Data User (Password otomatis di-hash via Model casts 'password' => 'hashed')
         $user = User::create([
             'name'       => $validated['name'],
             'email'      => $validated['email'],
-            'password'   => $validated['password'],
+            'password'   => $validated['password'], // otomatis di-hash via User model cast
             'phone'      => $validated['phone'] ?? null,
             'address'    => null,
             'role'       => 'user',
             'created_at' => now(),
         ]);
 
-        // 3. Langsung login setelah daftar
         Auth::login($user);
         $request->session()->regenerate();
 
@@ -149,9 +133,6 @@ class AuthController extends Controller
             ->with('success', 'Pendaftaran akun berhasil! Selamat datang di BooksVy, ' . $user->name . '.');
     }
 
-    /**
-     * Logout pengguna dan hancurkan sesi.
-     */
     public function logout(Request $request)
     {
         Auth::logout();

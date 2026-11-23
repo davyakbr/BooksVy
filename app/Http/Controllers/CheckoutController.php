@@ -70,14 +70,14 @@ class CheckoutController extends Controller
         // 1. Validasi Input Pengiriman
         $validated = $request->validate([
             'recipient_name'   => 'required|string|max:100',
-            'recipient_phone'  => ['required', 'string', 'max:25', 'regex:/^[0-9+\-\s]{8,20}$/'],
+            'recipient_phone'  => ['required', 'string', 'max:15', 'regex:/^[0-9]{8,15}$/'],
             'shipping_address' => 'required|string',
             'payment_channel'  => 'required|string',
             'notes'            => 'nullable|string',
         ], [
             'recipient_name.required'   => 'Nama penerima wajib diisi.',
             'recipient_phone.required'  => 'Nomor telepon/WhatsApp penerima wajib diisi.',
-            'recipient_phone.regex'     => 'Nomor WhatsApp / telepon harus berupa nomor yang valid (minimal 8 digit angka).',
+            'recipient_phone.regex'     => 'Nomor telepon/WhatsApp hanya boleh berupa angka dan maksimal 15 digit (minimal 8 digit).',
             'shipping_address.required' => 'Alamat pengiriman lengkap wajib diisi.',
         ]);
 

@@ -37,9 +37,14 @@
 
                 <div class="mb-3">
                     <label class="form-label small fw-semibold text-muted">Nomor WhatsApp / HP Aktif</label>
-                    <input type="text" name="phone" class="form-control" value="{{ old('phone') }}" placeholder="Contoh: 081234567890">
+                    <input type="tel" name="phone" class="form-control" value="{{ old('phone') }}" placeholder="Contoh: 081234567890" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 15);">
+                    <small class="text-muted" style="font-size: 0.72rem;">Hanya angka, maksimal 15 digit.</small>
                 </div>
 
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold text-muted">NIK</label>
+                    <input type="text" name="NIK" class="form-control" value="{{ old('NIK') }}" placeholder="">
+                </div>
                 <div class="mb-3">
                     <label class="form-label small fw-semibold text-muted">Kata Sandi <span class="text-danger">*</span></label>
                     <div class="input-group">
