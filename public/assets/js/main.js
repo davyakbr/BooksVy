@@ -22,44 +22,49 @@ window.togglePasswordVisibility = function (inputId, btn) {
     }
 };
 
-// Notifikasi real-time untuk input angka (telepon / NIK)
+// Notifikasi real-time simpel untuk input angka (telepon / NIK)
 window.validateNumberInput = function (input, maxDigits, fieldLabel) {
     maxDigits = maxDigits || 15;
-    fieldLabel = fieldLabel || 'Nomor';
+    fieldLabel = fieldLabel || 'Data';
     
     const originalVal = input.value;
     const cleanVal = originalVal.replace(/[^0-9]/g, '');
+    const noticeEl = input.parentNode.querySelector('.input-notice');
 
-    // Jika user mengetik selain angka
-    if (originalVal !== cleanVal) {
-        if (typeof Swal !== 'undefined') {
+    function showNotice(msg) {
+        if (noticeEl) {
+            noticeEl.textContent = msg;
+            noticeEl.classList.remove('d-none');
+            clearTimeout(input._noticeTimer);
+            input._noticeTimer = setTimeout(function () {
+                noticeEl.classList.add('d-none');
+            }, 2000);
+        } else if (typeof Swal !== 'undefined') {
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top',
                 showConfirmButton: false,
-                timer: 2200,
-                timerProgressBar: true,
+                timer: 1800,
             });
             Toast.fire({
                 icon: 'warning',
-                title: fieldLabel + ' hanya boleh berisi angka!'
+                title: msg
             });
         }
+    }
+
+    // Jika user mengetik selain angka
+    if (originalVal !== cleanVal) {
+        showNotice('Hanya angka yang diperbolehkan');
     } 
     // Jika mencapai batas digit maksimal
     else if (cleanVal.length >= maxDigits && originalVal.length >= maxDigits) {
-        if (input._lastLen !== maxDigits && typeof Swal !== 'undefined') {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top',
-                showConfirmButton: false,
-                timer: 2200,
-                timerProgressBar: true,
-            });
-            Toast.fire({
-                icon: 'info',
-                title: fieldLabel + ' maksimal ' + maxDigits + ' digit angka!'
-            });
+        if (input._lastLen !== maxDigits) {
+            showNotice('Maksimal ' + maxDigits + ' digit');
+        }
+    } else {
+        if (noticeEl && cleanVal.length < maxDigits) {
+            noticeEl.classList.add('d-none');
         }
     }
 

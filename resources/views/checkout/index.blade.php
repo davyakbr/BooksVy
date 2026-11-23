@@ -57,8 +57,8 @@
 
                     <div class="col-md-6">
                         <label class="form-label small fw-semibold text-muted">Nomor WhatsApp / HP Aktif <span class="text-danger">*</span></label>
-                        <input type="tel" name="recipient_phone" class="form-control" value="{{ old('recipient_phone', $user->phone) }}" placeholder="Contoh: 081234567890" maxlength="15" inputmode="numeric" oninput="validateNumberInput(this, 15, 'Nomor telepon')" required>
-                        <small class="text-muted" style="font-size: 0.72rem;">Hanya angka, maksimal 15 digit.</small>
+                        <input type="tel" name="recipient_phone" class="form-control" value="{{ old('recipient_phone', $user->phone) }}" maxlength="15" inputmode="numeric" oninput="validateNumberInput(this, 15, 'Nomor WhatsApp')" required>
+                        <div class="input-notice text-danger small mt-1 d-none" style="font-size: 0.78rem;"></div>
                     </div>
 
                     <div class="col-12">

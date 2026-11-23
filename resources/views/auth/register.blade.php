@@ -37,16 +37,16 @@
 
                 <div class="mb-3">
                     <label class="form-label small fw-semibold text-muted">Nomor WhatsApp / HP Aktif</label>
-                    <input type="tel" name="phone" class="form-control" value="{{ old('phone') }}" placeholder="Contoh: 081234567890" maxlength="15" inputmode="numeric" oninput="validateNumberInput(this, 15, 'Nomor WhatsApp')">
-                    <small class="text-muted" style="font-size: 0.72rem;">Hanya angka, maksimal 15 digit.</small>
+                    <input type="tel" name="phone" class="form-control" value="{{ old('phone') }}" maxlength="15" inputmode="numeric" oninput="validateNumberInput(this, 15, 'Nomor WhatsApp')">
+                    <div class="input-notice text-danger small mt-1 d-none" style="font-size: 0.78rem;"></div>
                     @error('phone')
                         <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle-fill me-1"></i> {{ $message }}</div>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label small fw-semibold text-muted">Nomor Induk Kependudukan (NIK)</label>
-                    <input type="tel" name="NIK" class="form-control" value="{{ old('NIK') }}" placeholder="Contoh: 3201234567890001" maxlength="16" inputmode="numeric" oninput="validateNumberInput(this, 16, 'NIK')">
-                    <small class="text-muted" style="font-size: 0.72rem;">Hanya angka, maksimal 16 digit.</small>
+                    <input type="tel" name="NIK" class="form-control" value="{{ old('NIK') }}" maxlength="16" inputmode="numeric" oninput="validateNumberInput(this, 16, 'NIK')">
+                    <div class="input-notice text-danger small mt-1 d-none" style="font-size: 0.78rem;"></div>
                     @error('NIK')
                         <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle-fill me-1"></i> {{ $message }}</div>
                     @enderror
