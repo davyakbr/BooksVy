@@ -15,9 +15,11 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // 1. Jika belum login (tamu/guest) mau mengakses rute admin
+        // 1. Jika belum login (tamu/guest) mencoba mengakses rute admin
         if (!Auth::check()) {
-            return redirect()->route('login')->with('warning', 'Akses ditolak! Anda harus masuk (login) sebagai Administrator terlebih dahulu untuk mengakses Panel Admin.');
+            return response()->view('errors.403', [
+                'message' => 'Anda belum masuk ke sistem. Halaman Panel Administrator hanya dapat diakses setelah Anda masuk menggunakan akun Administrator.'
+            ], 403);
         }
 
         // 2. Jika user sudah login tetapi bukan Administrator (role !== 'admin')

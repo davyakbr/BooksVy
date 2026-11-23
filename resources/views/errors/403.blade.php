@@ -27,8 +27,9 @@
                 {{ $message ?? 'Maaf, Anda tidak memiliki izin untuk mengakses halaman ini. Halaman Panel Administrator hanya diperuntukkan bagi pengguna dengan peran Administrator.' }}
             </p>
 
-            <!-- Card Rincian Status Akun Saat Ini -->
+            <!-- Card Rincian Status Akun -->
             @if(Auth::check())
+                <!-- Kondisi: Sudah Login Sebagai Pelanggan Biasa -->
                 <div class="card bg-light border-0 rounded-4 p-3 mb-4 text-start small">
                     <div class="d-flex align-items-center justify-content-between mb-2 pb-2 border-bottom">
                         <span class="text-muted"><i class="bi bi-person me-1"></i> Pengguna Aktif:</span>
@@ -45,6 +46,18 @@
                         </span>
                     </div>
                 </div>
+            @else
+                <!-- Kondisi: Belum Login (Tamu / Guest) -->
+                <div class="card bg-light border-0 rounded-4 p-3 mb-4 text-start small">
+                    <div class="d-flex align-items-center justify-content-between mb-2 pb-2 border-bottom">
+                        <span class="text-muted"><i class="bi bi-person-slash me-1"></i> Status Pengguna:</span>
+                        <span class="badge bg-secondary rounded-pill px-2 py-1">Belum Masuk (Tamu / Guest)</span>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <span class="text-muted"><i class="bi bi-info-circle me-1"></i> Keterangan:</span>
+                        <span class="text-dark">Silakan login menggunakan akun Administrator.</span>
+                    </div>
+                </div>
             @endif
 
             <!-- Tombol Aksi Navigasi UX -->
@@ -53,16 +66,9 @@
                     <i class="bi bi-house-door me-1"></i> Kembali ke Beranda Toko
                 </a>
                 
-                @if(Auth::check())
-                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-outline-secondary rounded-pill px-4 py-2 w-100 fw-semibold">
-                            <i class="bi bi-box-arrow-right me-1"></i> Ganti Akun Admin
-                        </button>
-                    </form>
-                @else
-                    <a href="{{ route('login') }}" class="btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold">
-                        <i class="bi bi-box-arrow-in-right me-1"></i> Masuk sebagai Admin
+                @if(!Auth::check())
+                    <a href="{{ route('login') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Masuk (Login)
                     </a>
                 @endif
             </div>
