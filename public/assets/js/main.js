@@ -22,6 +22,51 @@ window.togglePasswordVisibility = function (inputId, btn) {
     }
 };
 
+// Notifikasi real-time untuk input angka (telepon / NIK)
+window.validateNumberInput = function (input, maxDigits, fieldLabel) {
+    maxDigits = maxDigits || 15;
+    fieldLabel = fieldLabel || 'Nomor';
+    
+    const originalVal = input.value;
+    const cleanVal = originalVal.replace(/[^0-9]/g, '');
+
+    // Jika user mengetik selain angka
+    if (originalVal !== cleanVal) {
+        if (typeof Swal !== 'undefined') {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 2200,
+                timerProgressBar: true,
+            });
+            Toast.fire({
+                icon: 'warning',
+                title: fieldLabel + ' hanya boleh berisi angka!'
+            });
+        }
+    } 
+    // Jika mencapai batas digit maksimal
+    else if (cleanVal.length >= maxDigits && originalVal.length >= maxDigits) {
+        if (input._lastLen !== maxDigits && typeof Swal !== 'undefined') {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 2200,
+                timerProgressBar: true,
+            });
+            Toast.fire({
+                icon: 'info',
+                title: fieldLabel + ' maksimal ' + maxDigits + ' digit angka!'
+            });
+        }
+    }
+
+    input._lastLen = cleanVal.length;
+    input.value = cleanVal.slice(0, maxDigits);
+};
+
 function showCartToast(message, isSuccess = true) {
     const toastEl = document.getElementById('cartToast');
     const toastMsg = document.getElementById('cartToastMsg');

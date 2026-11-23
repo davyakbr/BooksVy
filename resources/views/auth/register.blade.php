@@ -37,16 +37,19 @@
 
                 <div class="mb-3">
                     <label class="form-label small fw-semibold text-muted">Nomor WhatsApp / HP Aktif</label>
-                    <input type="tel" name="phone" class="form-control" value="{{ old('phone') }}" placeholder="Contoh: 081234567890" maxlength="15" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 15);">
+                    <input type="tel" name="phone" class="form-control" value="{{ old('phone') }}" placeholder="Contoh: 081234567890" maxlength="15" inputmode="numeric" oninput="validateNumberInput(this, 15, 'Nomor WhatsApp')">
                     <small class="text-muted" style="font-size: 0.72rem;">Hanya angka, maksimal 15 digit.</small>
                     @error('phone')
                         <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle-fill me-1"></i> {{ $message }}</div>
                     @enderror
                 </div>
-
                 <div class="mb-3">
-                    <label class="form-label small fw-semibold text-muted">NIK</label>
-                    <input type="text" name="NIK" class="form-control" value="{{ old('NIK') }}" placeholder="">
+                    <label class="form-label small fw-semibold text-muted">Nomor Induk Kependudukan (NIK)</label>
+                    <input type="tel" name="NIK" class="form-control" value="{{ old('NIK') }}" placeholder="Contoh: 3201234567890001" maxlength="16" inputmode="numeric" oninput="validateNumberInput(this, 16, 'NIK')">
+                    <small class="text-muted" style="font-size: 0.72rem;">Hanya angka, maksimal 16 digit.</small>
+                    @error('NIK')
+                        <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle-fill me-1"></i> {{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label small fw-semibold text-muted">Kata Sandi <span class="text-danger">*</span></label>
