@@ -57,7 +57,7 @@ class HomeController extends Controller
                 break;
         }
 
-        $books = $query->get();
+        $books = $query->paginate(10)->withQueryString()->fragment('katalog');
 
         return view('home', compact('books', 'categories', 'banners', 'search', 'categoryId', 'sortBy'));
     }

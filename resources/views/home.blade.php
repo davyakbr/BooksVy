@@ -209,7 +209,7 @@
                 Semua Koleksi Buku
             @endif
         </h4>
-        <p class="text-muted small mb-0" id="catalogCount">Menampilkan {{ count($books) }} judul buku di BooksVy</p>
+        <p class="text-muted small mb-0" id="catalogCount">Menampilkan {{ $books->total() > 0 ? ($books->firstItem() . ' - ' . $books->lastItem() . ' dari ' . $books->total()) : '0' }} koleksi buku di BooksVy</p>
     </div>
 </div>
 
@@ -322,6 +322,23 @@
             </div>
         @endforeach
     </div>
+
+    <!-- Bookstore Modern Pagination -->
+    @if ($books->hasPages())
+        <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 bg-white mb-5 bookstore-pagination-card">
+            <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+                <div class="small text-muted d-flex align-items-center gap-2">
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 fw-semibold">
+                        <i class="bi bi-book me-1"></i> Hal. {{ $books->currentPage() }} dari {{ $books->lastPage() }}
+                    </span>
+                    <span>Menampilkan <strong>{{ $books->firstItem() }} - {{ $books->lastItem() }}</strong> dari <strong>{{ $books->total() }}</strong> koleksi buku</span>
+                </div>
+                <div class="bookstore-pagination-links">
+                    {{ $books->links() }}
+                </div>
+            </div>
+        </div>
+    @endif
 @endif
 
 <!-- Section Mengenal BooksVy (Tentang Kami) -->

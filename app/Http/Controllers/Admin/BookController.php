@@ -33,7 +33,7 @@ class BookController extends Controller
             $query->where('category_id', $categoryId);
         }
 
-        $books = $query->orderBy('id', 'desc')->paginate(5);
+        $books = $query->orderBy('id', 'desc')->paginate(10);
         $categories = Category::orderBy('name', 'asc')->get();
 
         return view('admin.books.index', compact('books', 'categories', 'search', 'categoryId'));
