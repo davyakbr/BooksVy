@@ -103,14 +103,12 @@ class AuthController extends Controller
                 'confirmed',
             ],
             'phone'    => ['nullable', 'string', 'max:15', 'regex:/^[0-9]{8,15}$/'],
-            'NIK'      => ['nullable', 'string', 'max:16', 'regex:/^[0-9]{8,16}$/'],
         ], [
             'name.required'      => 'Nama lengkap wajib diisi.',
             'email.required'     => 'Alamat email wajib diisi.',
             'email.email'        => 'Format alamat email tidak valid.',
             'email.unique'       => 'Alamat email ini sudah terdaftar. Silakan gunakan email lain atau login.',
             'phone.regex'        => 'Nomor WhatsApp / telepon hanya boleh berupa angka dan maksimal 15 digit.',
-            'NIK.regex'          => 'NIK hanya boleh berupa angka dan maksimal 16 digit.',
             'password.required'  => 'Kata sandi wajib diisi.',
             'password.min'       => 'Kata sandi minimal terdiri dari 8 karakter.',
             'password.regex'     => 'Kata sandi harus mengandung kombinasi huruf besar (kapital), angka, dan simbol unik (!@#$%^&*...).',
@@ -122,7 +120,6 @@ class AuthController extends Controller
             'email'      => $validated['email'],
             'password'   => $validated['password'], // otomatis di-hash via User model cast
             'phone'      => $validated['phone'] ?? null,
-            'NIK'        => $validated['NIK'] ?? null,
             'address'    => null,
             'role'       => 'user',
             'created_at' => now(),

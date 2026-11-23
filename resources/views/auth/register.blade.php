@@ -43,14 +43,7 @@
                         <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle-fill me-1"></i> {{ $message }}</div>
                     @enderror
                 </div>
-                <div class="mb-3">
-                    <label class="form-label small fw-semibold text-muted">Nomor Induk Kependudukan (NIK)</label>
-                    <input type="tel" name="NIK" class="form-control" value="{{ old('NIK') }}" maxlength="16" inputmode="numeric" oninput="validateNumberInput(this, 16, 'NIK')">
-                    <div class="input-notice text-danger small mt-1 d-none" style="font-size: 0.78rem;"></div>
-                    @error('NIK')
-                        <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle-fill me-1"></i> {{ $message }}</div>
-                    @enderror
-                </div>
+            
                 <div class="mb-3">
                     <label class="form-label small fw-semibold text-muted">Kata Sandi <span class="text-danger">*</span></label>
                     <div class="input-group">

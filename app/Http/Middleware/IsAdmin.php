@@ -22,7 +22,9 @@ class IsAdmin
 
         // 2. Jika user sudah login tetapi bukan Administrator (role !== 'admin')
         if (!Auth::user()->isAdmin()) {
-            return redirect()->route('home')->with('danger', 'Akses ditolak! Akun Anda tidak memiliki hak akses ke Panel Administrator.');
+            return response()->view('errors.403', [
+                'message' => 'Akun Anda (' . Auth::user()->name . ') terdaftar dengan peran Pelanggan. Halaman Panel Administrator hanya dapat diakses oleh Administrator sistem.'
+            ], 403);
         }
 
         return $next($request);
