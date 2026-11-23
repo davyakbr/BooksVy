@@ -22,6 +22,39 @@ window.togglePasswordVisibility = function (inputId, btn) {
     }
 };
 
+// Validasi input nomor telepon real-time: hanya angka & maksimal 15 digit dengan notifikasi dinamis
+window.handlePhoneInput = function (input, noticeId) {
+    const noticeEl = document.getElementById(noticeId);
+    const originalVal = input.value;
+    const cleanVal = originalVal.replace(/[^0-9]/g, '');
+
+    if (originalVal !== cleanVal) {
+        if (noticeEl) {
+            noticeEl.innerHTML = '<i class="bi bi-exclamation-circle-fill me-1"></i> Hanya karakter angka yang diperbolehkan!';
+            noticeEl.classList.remove('d-none');
+            clearTimeout(input._noticeTimer);
+            input._noticeTimer = setTimeout(function () {
+                noticeEl.classList.add('d-none');
+            }, 2500);
+        }
+    } else if (cleanVal.length >= 15 && originalVal.length >= 15) {
+        if (noticeEl) {
+            noticeEl.innerHTML = '<i class="bi bi-info-circle-fill me-1"></i> Maksimal 15 digit angka tercapai.';
+            noticeEl.classList.remove('d-none');
+            clearTimeout(input._noticeTimer);
+            input._noticeTimer = setTimeout(function () {
+                noticeEl.classList.add('d-none');
+            }, 2500);
+        }
+    } else {
+        if (noticeEl) {
+            noticeEl.classList.add('d-none');
+        }
+    }
+
+    input.value = cleanVal.slice(0, 15);
+};
+
 function showCartToast(message, isSuccess = true) {
     const toastEl = document.getElementById('cartToast');
     const toastMsg = document.getElementById('cartToastMsg');

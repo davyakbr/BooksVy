@@ -103,7 +103,7 @@ class AuthController extends Controller
                 'confirmed',
             ],
             'phone'    => ['nullable', 'string', 'max:15', 'regex:/^[0-9]{8,15}$/'],
-            'NIK'      => ['nullable', 'string', 'max:16'],
+'NIK'    => ['nullable', 'string', 'max:16', 'regex:/^[0-9]{8,16}$/'],
         ], [
             'name.required'      => 'Nama lengkap wajib diisi.',
             'email.required'     => 'Alamat email wajib diisi.',
