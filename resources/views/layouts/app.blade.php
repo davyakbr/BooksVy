@@ -117,6 +117,11 @@
                             <li><hr class="dropdown-divider"></li>
                             @if(!Auth::user()->isAdmin())
                                 <li>
+                                    <a class="dropdown-item py-2" href="{{ route('profile.edit') }}">
+                                        <i class="bi bi-person-gear text-primary me-2"></i> Edit Profil
+                                    </a>
+                                </li>
+                                <li>
                                     <a class="dropdown-item py-2" href="{{ route('orders.index') }}">
                                         <i class="bi bi-bag-check text-primary me-2"></i> Riwayat Pesanan
                                     </a>
