@@ -332,7 +332,7 @@
                     </div>
                     <hr class="my-2">
                     <div class="text-muted">
-                        <i class="bi bi-geo-alt-fill text-danger me-1"></i> Jl. Thamrin No. 88, Menteng, Jakarta Pusat
+                        <i class="bi bi-geo-alt-fill text-danger me-1"></i> Jl. Siaga No. 9, RT.9/RW.6, Kel. Kebon Kosong, Kec. Kemayoran, Kota Jakarta Pusat
                     </div>
                     <div class="text-muted">
                         <i class="bi bi-envelope-fill text-info me-1"></i> support@booksvy.com

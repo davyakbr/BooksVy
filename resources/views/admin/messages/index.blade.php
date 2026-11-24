@@ -6,7 +6,7 @@
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
     <div>
         <h3 class="fw-bold mb-1"><i class="bi bi-chat-left-text text-primary me-2"></i>Pesan Masuk dari Pelanggan</h3>
-        <p class="text-muted small mb-0">Kelola tiket bantuan dan tanggapi pesan masuk pelanggan BooksVy</p>
+        <p class="text-muted small mb-0">Kelola dan tanggapi pesan masuk dari pelanggan BooksVy</p>
     </div>
 </div>
 
@@ -17,7 +17,7 @@
             <div class="col-md-6">
                 <div class="input-group">
                     <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
-                    <input type="text" name="q" class="form-control bg-light border-start-0" placeholder="Cari No. Tiket / Nama / Email / Subjek..." value="{{ $search }}">
+                    <input type="text" name="q" class="form-control bg-light border-start-0" placeholder="Cari nama, email, topik, atau subjek pesan..." value="{{ $search }}">
                 </div>
             </div>
 
@@ -47,10 +47,10 @@
         <table class="table align-middle custom-table mb-0">
             <thead>
                 <tr>
-                    <th style="width: 15%;">No. Tiket & Waktu</th>
-                    <th style="width: 20%;">Pengirim</th>
+                    <th style="width: 15%;">Waktu Masuk</th>
+                    <th style="width: 22%;">Pengirim</th>
                     <th style="width: 18%;">Topik & Pesanan</th>
-                    <th style="width: 32%;">Subjek & Pesan</th>
+                    <th style="width: 30%;">Subjek & Pesan</th>
                     <th class="text-center" style="width: 15%;">Status & Aksi</th>
                 </tr>
             </thead>
@@ -58,8 +58,8 @@
                 @forelse ($messages as $m)
                     <tr>
                         <td>
-                            <strong class="text-primary d-block">#{{ $m->ticket_number ?: 'PSN-' . $m->id }}</strong>
-                            <small class="text-muted">{{ date('d/m/Y H:i', strtotime($m->created_at)) }} WIB</small>
+                            <strong class="text-dark d-block"><i class="bi bi-calendar3 me-1 text-muted"></i>{{ date('d/m/Y', strtotime($m->created_at)) }}</strong>
+                            <small class="text-muted"><i class="bi bi-clock me-1"></i>{{ date('H:i', strtotime($m->created_at)) }} WIB</small>
                         </td>
                         <td>
                             <strong class="text-dark d-block">{{ $m->name }}</strong>
@@ -103,7 +103,7 @@
                                 <a href="{{ route('admin.messages.show', $m->id) }}" class="btn btn-outline-primary btn-sm rounded-pill px-2" title="Lihat & Balas">
                                     <i class="bi bi-reply-fill"></i>
                                 </a>
-                                <form action="{{ route('admin.messages.destroy', $m->id) }}" method="POST" class="d-inline form-confirm-delete" data-item-name="pesan tiket dari &quot;{{ addslashes($m->name) }}&quot;">
+                                <form action="{{ route('admin.messages.destroy', $m->id) }}" method="POST" class="d-inline form-confirm-delete" data-item-name="pesan dari &quot;{{ addslashes($m->name) }}&quot;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-2" title="Hapus Pesan">

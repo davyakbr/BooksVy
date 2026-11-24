@@ -64,6 +64,6 @@ class ContactController extends Controller
         ]);
 
         return redirect()->route('contact', ['tab' => 'my_messages'])
-            ->with('success', 'Pesan Anda dengan ID <strong>#' . $ticketNumber . '</strong> berhasil dikirimkan ke Admin BooksVy! Tanggapan resmi akan muncul pada tab Riwayat Pesan.');
+            ->with('success', 'Pesan Anda berhasil dikirimkan ke Admin BooksVy! Tanggapan resmi dari Admin akan muncul di sini pada tab Riwayat Pesan.');
     }
 }

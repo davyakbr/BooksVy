@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Tanggapi Tiket #' . ($message->ticket_number ?: 'PSN-' . $message->id) . ' - BooksVy Admin')
+@section('title', 'Tanggapi Pesan dari ' . $message->name . ' - BooksVy Admin')
 
 @section('content')
 <div class="mb-4">
@@ -13,8 +13,8 @@
     <div class="col-lg-7">
         <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <span class="badge bg-primary rounded-pill px-3 py-1">
-                    #{{ $message->ticket_number ?: 'PSN-' . $message->id }}
+                <span class="badge bg-light text-dark border rounded-pill px-3 py-1">
+                    <i class="bi bi-chat-left-text me-1 text-primary"></i> Pesan Masuk
                 </span>
                 <span class="badge rounded-pill {{ $message->status === 'Sudah Dibalas' ? 'bg-success' : 'bg-warning text-dark' }}">
                     {{ $message->status }}
@@ -71,7 +71,7 @@
         <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
             <h5 class="fw-bold mb-3"><i class="bi bi-reply-fill text-primary me-2"></i>Form Balasan Admin</h5>
             <p class="text-muted small mb-4">
-                Tanggapan Anda akan langsung dapat dibaca oleh pelanggan saat mereka mengecek tiket atau menu Bantuan & Kontak.
+                Tanggapan Anda akan langsung dapat dibaca oleh pelanggan pada tab Riwayat Pesan di halaman Bantuan & Kontak.
             </p>
 
             <form action="{{ route('admin.messages.reply', $message->id) }}" method="POST">

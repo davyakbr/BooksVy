@@ -21,10 +21,11 @@ class MessageController extends Controller
 
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
-                $q->where('ticket_number', 'like', "%{$search}%")
-                  ->orWhere('name', 'like', "%{$search}%")
+                $q->where('name', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('subject', 'like', "%{$search}%");
+                  ->orWhere('subject', 'like', "%{$search}%")
+                  ->orWhere('topic', 'like', "%{$search}%")
+                  ->orWhere('message', 'like', "%{$search}%");
             });
         }
 
@@ -55,7 +56,7 @@ class MessageController extends Controller
             'status'     => 'Sudah Dibalas',
         ]);
 
-        return back()->with('success', 'Balasan untuk tiket #' . $message->ticket_number . ' berhasil disimpan!');
+        return back()->with('success', 'Balasan untuk pesan dari ' . $message->name . ' berhasil disimpan!');
     }
 
     public function destroy($id)
