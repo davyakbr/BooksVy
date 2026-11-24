@@ -20,23 +20,6 @@
     </div>
 </div>
 
-@if(($unreadMessagesCount ?? 0) > 0)
-    <!-- Banner Notifikasi Merah Pesan Masuk Baru -->
-    <div class="alert border-0 shadow-sm rounded-4 d-flex flex-column flex-md-row align-items-md-center justify-content-between p-3 mb-4 bg-danger text-white gap-3">
-        <div class="d-flex align-items-center gap-3">
-            <div class="rounded-circle bg-white text-danger p-2 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px;">
-                <i class="bi bi-chat-left-dots-fill fs-5"></i>
-            </div>
-            <div>
-                <strong class="d-block fs-6">Ada {{ $unreadMessagesCount }} Pesan Masuk Baru yang Menunggu Tanggapan!</strong>
-                <span class="small opacity-75">Pelanggan mengirimkan pesan/pertanyaan dan menunggu balasan resmi dari Administrator.</span>
-            </div>
-        </div>
-        <a href="{{ route('admin.messages.index') }}" class="btn btn-light text-danger fw-bold rounded-pill px-4 btn-sm shadow-sm flex-shrink-0">
-            <i class="bi bi-envelope-open me-1"></i> Buka Pesan Masuk &rarr;
-        </a>
-    </div>
-@endif
 
 <!-- Statistik KPI Cards -->
 <div class="row g-3 mb-5">
