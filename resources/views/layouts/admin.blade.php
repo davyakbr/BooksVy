@@ -36,114 +36,76 @@
 <div class="admin-layout-wrapper">
     <!-- Admin Sidebar (Samping) -->
     <aside class="admin-sidebar" id="adminSidebar">
-        <!-- Brand Header: Modern Floating Brand Box -->
+        <!-- Brand Header: Tanpa Logo di Button-nya (Murni Teks Bersih & Elegan) -->
         <div class="admin-sidebar-brand">
             <a href="{{ route('admin.dashboard') }}" class="admin-brand-button-text">
-                <div class="d-flex align-items-center gap-2">
-                    <div class="brand-icon-box">
-                        <i class="bi bi-shield-check"></i>
-                    </div>
-                    <div>
-                        <div class="brand-text-title">
-                            Books<span class="vy">Vy</span>
-                        </div>
-                        <span class="brand-text-sub">Admin Workspace</span>
-                    </div>
+                <div class="brand-text-title">
+                    <span>Books<span class="vy">Vy</span></span>
+                    <span class="brand-text-badge">ADMIN</span>
                 </div>
-                <span class="brand-text-badge">PRO</span>
+                <span class="brand-text-sub">Control Center</span>
             </a>
         </div>
 
-        <!-- Tombol Menu di Samping -->
+        <!-- Tombol Menu di Samping (Pindah dari Header) -->
         <div class="admin-sidebar-menu">
-            <div class="admin-menu-label">
-                <span>MENU UTAMA</span>
-            </div>
+            <div class="admin-menu-label">NAVIGASI UTAMA</div>
 
             <a href="{{ route('admin.dashboard') }}" class="admin-sidebar-btn {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="admin-nav-icon"><i class="bi bi-grid-1x2-fill"></i></span>
-                    <span class="admin-nav-text">Dashboard</span>
-                </div>
+                <span>Dashboard</span>
             </a>
 
             <a href="{{ route('admin.books.index') }}" class="admin-sidebar-btn {{ request()->routeIs('admin.books.*') && !request()->routeIs('admin.books.create') ? 'active' : '' }}">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="admin-nav-icon"><i class="bi bi-book-half"></i></span>
-                    <span class="admin-nav-text">Data Buku</span>
-                </div>
+                <span>Data Buku</span>
             </a>
 
             <a href="{{ route('admin.categories.index') }}" class="admin-sidebar-btn {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="admin-nav-icon"><i class="bi bi-tags-fill"></i></span>
-                    <span class="admin-nav-text">Kategori</span>
-                </div>
+                <span>Kategori</span>
             </a>
 
             <a href="{{ route('admin.orders.index') }}" class="admin-sidebar-btn {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="admin-nav-icon"><i class="bi bi-bag-check-fill"></i></span>
-                    <span class="admin-nav-text">Pesanan</span>
-                </div>
+                <span>Pesanan</span>
             </a>
 
             <a href="{{ route('admin.users.index') }}" class="admin-sidebar-btn {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="admin-nav-icon"><i class="bi bi-people-fill"></i></span>
-                    <span class="admin-nav-text">Pengguna</span>
-                </div>
+                <span>Pengguna</span>
             </a>
 
             <a href="{{ route('admin.messages.index') }}" class="admin-sidebar-btn {{ request()->routeIs('admin.messages.*') ? 'active' : '' }}">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="admin-nav-icon"><i class="bi bi-chat-left-dots-fill"></i></span>
-                    <span class="admin-nav-text">Pesan Masuk</span>
-                </div>
+                <span>Pesan Masuk</span>
                 @if(($unreadCount ?? 0) > 0)
-                    <span class="badge bg-danger rounded-pill px-2 py-1 ms-auto shadow-sm" style="font-size: 0.68rem;">{{ $unreadCount }} baru</span>
+                    <span class="badge bg-danger rounded-pill px-2 py-1 ms-auto" style="font-size: 0.7rem;">{{ $unreadCount }} baru</span>
                 @endif
             </a>
 
-            <div class="admin-menu-label mt-4">
-                <span>AKSI PINTAS</span>
-            </div>
+            <div class="admin-menu-label mt-4">AKSI CEPAT</div>
 
             <!-- Tombol Tambah Buku di Samping -->
             <a href="{{ route('admin.books.create') }}" class="admin-sidebar-action-btn {{ request()->routeIs('admin.books.create') ? 'opacity-90' : '' }}">
-                <i class="bi bi-plus-circle-fill me-1"></i> Tambah Buku
+                + Tambah Buku
             </a>
 
             <!-- Tombol Buka Halaman Toko di Bawah Tambah Buku -->
             <a href="{{ route('home') }}" target="_blank" class="admin-sidebar-store-btn mt-2">
-                <i class="bi bi-shop me-2"></i>
                 <span>Halaman Toko</span>
-                <i class="bi bi-arrow-up-right ms-auto small opacity-75"></i>
             </a>
         </div>
 
         <!-- Sidebar Footer -->
         <div class="admin-sidebar-footer">
-            <div class="admin-user-profile-card">
-                <div class="d-flex align-items-center gap-2">
-                    <div class="admin-avatar-wrap">
-                        <div class="admin-avatar">
-                            {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
-                        </div>
-                        <span class="admin-status-dot"></span>
-                    </div>
-                    <div class="admin-user-info">
-                        <span class="admin-user-name text-truncate" style="max-width: 120px;">{{ Auth::user()->name ?? 'Administrator' }}</span>
-                        <span class="admin-user-role">Online &bull; Admin</span>
-                    </div>
+            <div class="admin-user-profile-badge">
+                <div class="admin-user-info">
+                    <span class="admin-user-name text-truncate" style="max-width: 140px;">{{ Auth::user()->name ?? 'Administrator' }}</span>
+                    <span class="admin-user-role">Sistem Online</span>
                 </div>
-                <form method="POST" action="{{ route('logout') }}" id="adminLogoutForm" class="form-confirm-logout m-0">
-                    @csrf
-                    <button type="submit" class="admin-sidebar-btn-logout-mini" title="Keluar / Logout">
-                        <i class="bi bi-box-arrow-right"></i>
-                    </button>
-                </form>
+                <span class="admin-status-dot"></span>
             </div>
+            <form method="POST" action="{{ route('logout') }}" id="adminLogoutForm" class="form-confirm-logout">
+                @csrf
+                <button type="submit" class="admin-sidebar-btn-logout">
+                    Keluar (Logout)
+                </button>
+            </form>
         </div>
     </aside>
 
