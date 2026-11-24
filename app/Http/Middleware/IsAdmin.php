@@ -10,25 +10,39 @@ use Symfony\Component\HttpFoundation\Response;
 class IsAdmin
 {
     /**
-     * Handle an incoming request.
-     * Memproteksi rute admin dari pengunjung yang belum login maupun user biasa (bukan admin).
+     * Middleware: IsAdmin
+     * 
+     * FUNGSI:
+     * Menjaga keamanan rute panel administrator (/admin/*).
+     * Mencegah pengunjung umum (guest) atau pelanggan biasa (user) masuk ke halaman admin.
+     * 
+     * CARA KERJA:
+     * 1. Cek apakah pengguna sudah login. Jika belum -> Tampilkan Error 403.
+     * 2. Cek apakah role pengguna adalah 'admin'. Jika bukan -> Tampilkan Error 403.
+     * 3. Jika lolos kedua syarat di atas -> Lanjutkan permintaan ke halaman admin ($next).
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // 1. Jika belum login (tamu/guest) mencoba mengakses rute admin
+        // -------------------------------------------------------------
+        // SYARAT 1: Pengguna HARUS sudah login (Bukan Pengunjung Tamu)
+        // -------------------------------------------------------------
         if (!Auth::check()) {
             return response()->view('errors.403', [
                 'message' => 'Anda belum masuk ke sistem. Halaman Panel Administrator hanya dapat diakses setelah Anda masuk menggunakan akun Administrator.'
             ], 403);
         }
 
-        // 2. Jika user sudah login tetapi bukan Administrator (role !== 'admin')
+        // -------------------------------------------------------------
+        // SYARAT 2: Peran (Role) akun HARUS 'admin'
+        // Memanfaatkan method isAdmin() yang ada di app/Models/User.php
+        // -------------------------------------------------------------
         if (!Auth::user()->isAdmin()) {
             return response()->view('errors.403', [
                 'message' => 'Akun Anda (' . Auth::user()->name . ') terdaftar dengan peran Pelanggan. Halaman Panel Administrator hanya dapat diakses oleh Administrator sistem.'
             ], 403);
         }
 
+        // Jika kedua syarat terpenuhi, izinkan request masuk ke Controller Admin
         return $next($request);
     }
 }
