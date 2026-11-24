@@ -1561,6 +1561,92 @@ main.main-content {
     display: inline-block;
 }
 
+/* Bookstore Catalog Pagination Enhancement */
+.bookstore-pagination-card {
+    border-radius: 1rem !important;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+.bookstore-pagination-links .pagination {
+    margin: 0;
+    gap: 6px;
+}
+
+.bookstore-pagination-links .page-item .page-link {
+    border-radius: 50rem !important;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 0.75rem;
+    font-weight: 600;
+    font-size: 0.88rem;
+    border: 1px solid #e9ecef;
+    color: var(--bvy-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+}
+
+.bookstore-pagination-links .page-item .page-link:hover {
+    background-color: var(--bvy-primary);
+    color: #ffffff;
+    border-color: var(--bvy-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(11, 93, 68, 0.2);
+}
+
+.bookstore-pagination-links .page-item.active .page-link {
+    background: linear-gradient(135deg, var(--bvy-primary) 0%, var(--bvy-primary-dark) 100%) !important;
+    border-color: var(--bvy-primary) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(11, 93, 68, 0.35) !important;
+}
+
+.bookstore-pagination-links .page-item.disabled .page-link {
+    background-color: #f8f9fa;
+    color: #adb5bd;
+    border-color: #e9ecef;
+    opacity: 0.7;
+}
+
+/* ================= Quantity Input Counter Styling ================= */
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button,
+.cart-qty-input::-webkit-outer-spin-button,
+.cart-qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.qty-input,
+.cart-qty-input {
+    -moz-appearance: textfield;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--bvy-primary-dark);
+}
+
+.btn-qty-minus,
+.btn-qty-plus {
+    width: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-color: #dee2e6;
+    color: #495057;
+    background-color: #f8f9fa;
+    transition: all 0.2s ease;
+}
+
+.btn-qty-minus:hover,
+.btn-qty-plus:hover {
+    background-color: var(--bvy-primary);
+    border-color: var(--bvy-primary);
+    color: #ffffff;
+}
+
 /* ================= Print Styling ================= */
 @media print {
     .app-navbar, .app-footer, .no-print, .btn, .alert, .top-announcement-bar {

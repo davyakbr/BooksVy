@@ -521,9 +521,13 @@ document.addEventListener('DOMContentLoaded', function () {
         // Validasi ketikan langsung saat user mengetik nominal angka di keranjang
         input.addEventListener('input', function () {
             let cleanVal = this.value.replace(/[^0-9]/g, '');
-            if (this.value !== cleanVal) {
-                this.value = cleanVal;
+
+            // Bersihkan angka 0 di depan (seperti 0, 00, 000, 05)
+            if (/^0+/.test(cleanVal)) {
+                cleanVal = cleanVal.replace(/^0+/, '');
             }
+
+            this.value = cleanVal;
             if (this.value === '') return;
 
             const max = parseInt(this.getAttribute('max')) || 999;
@@ -533,36 +537,38 @@ document.addEventListener('DOMContentLoaded', function () {
                 const bookId = this.getAttribute('data-book-id');
                 const bookTitleEl = document.querySelector('#cart-row-' + bookId + ' h6 a');
                 const bookTitle = bookTitleEl ? bookTitleEl.textContent.trim() : 'buku ini';
-                const msg = 'Stok tidak mencukupi! Buku "' + bookTitle + '" maksimal hanya tersedia ' + max + ' unit.';
+                const msg = 'Maksimal pembelian buku "' + bookTitle + '" adalah ' + max + ' unit (sesuai sisa stok).';
                 if (typeof showCartToast === 'function') {
                     showCartToast(msg, false);
-                } else {
-                    alert(msg);
                 }
             }
         });
 
         input.addEventListener('change', function () {
             const bookId = this.getAttribute('data-book-id');
-            let val = parseInt(this.value) || 1;
+            let val = parseInt(this.value, 10);
             const max = parseInt(this.getAttribute('max')) || 999;
             const min = parseInt(this.getAttribute('min')) || 1;
-            if (val > max) {
-                val = max;
-                this.value = max;
-                const bookTitleEl = document.querySelector('#cart-row-' + bookId + ' h6 a');
-                const bookTitle = bookTitleEl ? bookTitleEl.textContent.trim() : 'buku ini';
-                const msg = 'Stok tidak mencukupi! Buku "' + bookTitle + '" maksimal hanya tersedia ' + max + ' unit.';
-                if (typeof showCartToast === 'function') {
-                    showCartToast(msg, false);
-                } else {
-                    alert(msg);
-                }
-            } else if (val < min) {
+            if (isNaN(val) || val < min) {
                 val = min;
                 this.value = min;
+            } else if (val > max) {
+                val = max;
+                this.value = max;
             }
             updateCartItemQty(bookId, val);
+        });
+
+        input.addEventListener('blur', function () {
+            const bookId = this.getAttribute('data-book-id');
+            let val = parseInt(this.value, 10);
+            const max = parseInt(this.getAttribute('max')) || 999;
+            const min = parseInt(this.getAttribute('min')) || 1;
+            if (isNaN(val) || val < min) {
+                val = min;
+                this.value = min;
+                updateCartItemQty(bookId, val);
+            }
         });
         input.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {

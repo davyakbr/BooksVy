@@ -219,14 +219,14 @@ window.handleAddToCart = function (event, form) {
     if (qtyInput) {
         const max = parseInt(qtyInput.getAttribute('max')) || 999;
         const min = parseInt(qtyInput.getAttribute('min')) || 1;
-        let val = parseInt(qtyInput.value) || 1;
-        if (val > max) {
-            qtyInput.value = max;
-            showCartToast('Stok tidak mencukupi! Jumlah pesanan tidak boleh melebihi stok yang tersedia (maksimal ' + max + ' unit).', false);
-            return false;
-        }
-        if (val < min) {
+        let val = parseInt(qtyInput.value, 10);
+        if (isNaN(val) || val < min) {
             qtyInput.value = min;
+            val = min;
+        } else if (val > max) {
+            qtyInput.value = max;
+            showCartToast('Maksimal pembelian adalah ' + max + ' unit sesuai stok yang tersedia.', false);
+            return false;
         }
     }
 
@@ -357,58 +357,52 @@ document.addEventListener('DOMContentLoaded', function () {
         const max = parseInt(input.getAttribute('max')) || 999;
         const min = parseInt(input.getAttribute('min')) || 1;
 
-        // Cegah pengetikan karakter simbol/tanda minus/eksponen
+        // Cegah pengetikan karakter simbol/tanda minus/eksponen/titik
         input.addEventListener('keydown', function (e) {
-            if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
+            if (['-', '+', 'e', 'E', '.', ','].includes(e.key)) {
                 e.preventDefault();
             }
         });
 
-        // Validasi REAL-TIME saat pengguna MENGETIK angka di kolom kuantitas
+        // Validasi saat pengguna mengetik angka di kolom kuantitas
         input.addEventListener('input', function () {
             // Hapus karakter non-angka jika ada yang tembus/copy-paste
             let cleanVal = this.value.replace(/[^0-9]/g, '');
-            if (this.value !== cleanVal) {
-                this.value = cleanVal;
+
+            // Cegah angka 0 di awal (seperti 0, 00, 0000, 05) tanpa memunculkan popup yang mengganggu
+            if (/^0+/.test(cleanVal)) {
+                cleanVal = cleanVal.replace(/^0+/, ''); // Otomatis bersihkan semua angka 0 di depan
             }
 
-            if (this.value === '') {
-                return; // Berikan kesempatan user menghapus untuk mengetik angka baru
+            this.value = cleanVal;
+
+            if (cleanVal === '') {
+                return; // Biarkan kosong sejenak agar user bisa mengetik angka baru
             }
 
-            let val = parseInt(this.value, 10);
-            if (isNaN(val)) val = min;
+            let val = parseInt(cleanVal, 10);
 
-            // Jika angka yang diketik MELEBIHI stok maksimal yang tersedia
+            // Jika angka yang diketik melebihi stok maksimal
             if (val > max) {
                 this.value = max;
-                const msg = 'Stok tidak mencukupi! Jumlah pesanan tidak boleh melebihi stok yang tersedia (maksimal ' + max + ' unit).';
                 if (typeof showCartToast === 'function') {
-                    showCartToast(msg, false);
-                } else {
-                    alert(msg);
+                    showCartToast('Maksimal pembelian adalah ' + max + ' unit (sesuai sisa stok).', false);
                 }
             }
         });
 
-        // Saat selesai mengetik (kursor berpindah / blur)
-        input.addEventListener('blur', function () {
-            let val = parseInt(this.value, 10);
+        // Normalisasi saat selesai mengetik atau kursor keluar (blur/change)
+        function normalizeQuantityInput() {
+            let val = parseInt(input.value, 10);
             if (isNaN(val) || val < min) {
-                this.value = min;
+                input.value = min;
             } else if (val > max) {
-                this.value = max;
+                input.value = max;
             }
-        });
+        }
 
-        input.addEventListener('change', function () {
-            let val = parseInt(this.value, 10);
-            if (isNaN(val) || val < min) {
-                this.value = min;
-            } else if (val > max) {
-                this.value = max;
-            }
-        });
+        input.addEventListener('blur', normalizeQuantityInput);
+        input.addEventListener('change', normalizeQuantityInput);
 
         if (btnMinus) {
             btnMinus.addEventListener('click', function () {

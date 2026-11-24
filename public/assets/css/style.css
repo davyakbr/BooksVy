@@ -1611,6 +1611,42 @@ main.main-content {
     opacity: 0.7;
 }
 
+/* ================= Quantity Input Counter Styling ================= */
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button,
+.cart-qty-input::-webkit-outer-spin-button,
+.cart-qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.qty-input,
+.cart-qty-input {
+    -moz-appearance: textfield;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--bvy-primary-dark);
+}
+
+.btn-qty-minus,
+.btn-qty-plus {
+    width: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-color: #dee2e6;
+    color: #495057;
+    background-color: #f8f9fa;
+    transition: all 0.2s ease;
+}
+
+.btn-qty-minus:hover,
+.btn-qty-plus:hover {
+    background-color: var(--bvy-primary);
+    border-color: var(--bvy-primary);
+    color: #ffffff;
+}
+
 /* ================= Print Styling ================= */
 @media print {
     .app-navbar, .app-footer, .no-print, .btn, .alert, .top-announcement-bar {
