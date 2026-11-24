@@ -916,11 +916,11 @@ main.main-content {
     position: relative;
 }
 
-/* Sidebar Styles - Fixed Desktop (Tidak Ikut Ter-scroll Saat Halaman Discrool) */
+/* Sidebar Styles - Fixed Desktop (Modern Emerald Dark Duo-Tone) */
 .admin-sidebar {
     width: 270px;
     min-width: 270px;
-    background: linear-gradient(180deg, #061611 0%, #0a2119 50%, #061510 100%);
+    background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.14), transparent 55%), linear-gradient(180deg, #091712 0%, #0d221a 45%, #07140f 100%);
     color: #e2e8f0;
     display: flex;
     flex-direction: column;
@@ -929,44 +929,57 @@ main.main-content {
     left: 0;
     bottom: 0;
     height: 100vh;
-    border-right: 1px solid rgba(16, 185, 129, 0.15);
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 4px 0 28px rgba(0, 0, 0, 0.35);
     z-index: 1040;
     transition: left 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Brand Button: TIDAK PAKAI LOGO DI BUTTON-NYA, Murni Teks Bersih & Elegan */
+/* Brand Box in Sidebar */
 .admin-sidebar-brand {
-    padding: 1.4rem 1.25rem 1.2rem 1.25rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.15rem 1rem 1rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .admin-brand-button-text {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     text-decoration: none;
     background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(16, 185, 129, 0.25);
-    border-radius: 12px;
-    padding: 0.75rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 14px;
+    padding: 0.65rem 0.85rem;
     transition: all 0.25s ease;
 }
 
 .admin-brand-button-text:hover {
-    background: rgba(16, 185, 129, 0.1);
-    border-color: #34d399;
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.18);
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(52, 211, 153, 0.4);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.15);
     transform: translateY(-1px);
 }
 
-.admin-brand-button-text .brand-text-title {
-    font-size: 1.35rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+.brand-icon-box {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #10b981 0%, #047857 100%);
     color: #ffffff;
-    line-height: 1.1;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    font-size: 1.15rem;
+    box-shadow: 0 3px 10px rgba(16, 185, 129, 0.35);
+    flex-shrink: 0;
+}
+
+.admin-brand-button-text .brand-text-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    color: #ffffff;
+    line-height: 1.15;
 }
 
 .admin-brand-button-text .brand-text-title span.vy {
@@ -975,24 +988,23 @@ main.main-content {
 }
 
 .admin-brand-button-text .brand-text-badge {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     font-weight: 800;
     letter-spacing: 0.8px;
     padding: 2px 7px;
     border-radius: 6px;
-    background: rgba(16, 185, 129, 0.22);
+    background: rgba(16, 185, 129, 0.2);
     color: #6ee7b7;
-    border: 1px solid rgba(16, 185, 129, 0.4);
+    border: 1px solid rgba(52, 211, 153, 0.35);
     text-transform: uppercase;
 }
 
 .admin-brand-button-text .brand-text-sub {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     font-weight: 600;
-    letter-spacing: 1.2px;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.55);
-    margin-top: 4px;
+    color: rgba(255, 255, 255, 0.5);
     display: block;
 }
 
@@ -1000,7 +1012,7 @@ main.main-content {
 .admin-sidebar-menu {
     flex: 1 1 auto;
     overflow-y: auto;
-    padding: 1.25rem 0.95rem;
+    padding: 1.1rem 0.85rem;
     scrollbar-width: thin;
     scrollbar-color: rgba(16, 185, 129, 0.3) transparent;
 }
@@ -1014,112 +1026,188 @@ main.main-content {
 }
 
 .admin-menu-label {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     font-weight: 700;
     letter-spacing: 1.2px;
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.4);
-    padding: 0 0.75rem;
-    margin-bottom: 0.45rem;
+    padding: 0 0.5rem;
+    margin-bottom: 0.5rem;
     margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.admin-menu-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .admin-menu-label:first-child {
     margin-top: 0;
 }
 
-/* Tombol Menu di Samping (Pindah dari Header - Tanpa Logo di Button-nya) */
+/* Tombol Menu di Samping */
 .admin-sidebar-btn {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.62rem 0.95rem;
-    margin-bottom: 0.3rem;
-    border-radius: 10px;
-    color: rgba(255, 255, 255, 0.78);
+    padding: 0.52rem 0.75rem;
+    margin-bottom: 0.35rem;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.75);
     text-decoration: none;
     font-size: 0.88rem;
     font-weight: 500;
-    letter-spacing: 0.1px;
-    transition: all 0.2s ease;
-    border-left: 3px solid transparent;
+    transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
     background: transparent;
+    border: 1px solid transparent;
+}
+
+.admin-nav-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.22s ease;
+    flex-shrink: 0;
+}
+
+.admin-nav-text {
+    letter-spacing: 0.1px;
 }
 
 .admin-sidebar-btn:hover {
     color: #ffffff;
-    background: rgba(255, 255, 255, 0.07);
-    border-left-color: rgba(52, 211, 153, 0.6);
-    transform: translateX(2px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.08);
+    transform: translateX(3px);
+}
+
+.admin-sidebar-btn:hover .admin-nav-icon {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: rgba(52, 211, 153, 0.35);
+    color: #34d399;
 }
 
 .admin-sidebar-btn.active {
     color: #ffffff;
-    background: linear-gradient(90deg, rgba(16, 185, 129, 0.22) 0%, rgba(16, 185, 129, 0.08) 100%);
-    border-left-color: #34d399;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     font-weight: 600;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+    border-color: rgba(52, 211, 153, 0.5);
+}
+
+.admin-sidebar-btn.active .admin-nav-icon {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
 }
 
 /* Tombol Aksi Samping (Tambah Buku) */
 .admin-sidebar-action-btn {
-    display: block;
-    text-align: center;
-    padding: 0.65rem 1rem;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.62rem 1rem;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    border: 1px solid rgba(52, 211, 153, 0.3);
     color: #ffffff !important;
     text-decoration: none;
     font-weight: 600;
     font-size: 0.88rem;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
-    margin: 0.75rem 0.25rem 0.5rem 0.25rem;
+    box-shadow: 0 4px 14px rgba(4, 120, 87, 0.35);
+    margin: 0.75rem 0.15rem 0.45rem 0.15rem;
     transition: all 0.25s ease;
 }
 
 .admin-sidebar-action-btn:hover {
-    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
-    color: #062b1e !important;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     transform: translateY(-1.5px);
-    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.45);
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45);
 }
 
-/* Tombol Halaman Toko di Bawah Tambah Buku (Kontras Jelas & Terbaca) */
+/* Tombol Halaman Toko */
 .admin-sidebar-store-btn {
-    display: block;
-    text-align: center;
-    padding: 0.55rem 0.95rem;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    color: #ffffff !important;
+    display: flex;
+    align-items: center;
+    padding: 0.55rem 0.85rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    color: rgba(255, 255, 255, 0.85) !important;
     text-decoration: none;
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     font-weight: 500;
-    margin: 0 0.25rem;
+    margin: 0 0.15rem;
     transition: all 0.2s ease;
 }
 
 .admin-sidebar-store-btn:hover {
-    background: rgba(16, 185, 129, 0.2);
-    border-color: #34d399;
+    background: rgba(16, 185, 129, 0.14);
+    border-color: rgba(52, 211, 153, 0.4);
     color: #34d399 !important;
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Sidebar Footer (Admin Profil & Logout) */
+/* Sidebar Footer (User Card & Mini Logout) */
 .admin-sidebar-footer {
-    padding: 1.1rem 1.25rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(0, 0, 0, 0.22);
+    padding: 0.85rem 0.95rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    background: rgba(0, 0, 0, 0.25);
 }
 
-.admin-user-profile-badge {
+.admin-user-profile-card {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 0.75rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 12px;
+    padding: 0.55rem 0.75rem;
+}
+
+.admin-avatar-wrap {
+    position: relative;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+}
+
+.admin-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.admin-status-dot {
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #10b981;
+    border: 2px solid #081510;
+    box-shadow: 0 0 6px #10b981;
 }
 
 .admin-user-info {
@@ -1127,54 +1215,39 @@ main.main-content {
 }
 
 .admin-user-name {
-    font-size: 0.86rem;
+    font-size: 0.82rem;
     font-weight: 600;
     color: #ffffff;
     display: block;
 }
 
 .admin-user-role {
-    font-size: 0.7rem;
+    font-size: 0.67rem;
     color: #34d399;
     font-weight: 500;
 }
 
-.admin-status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #10b981;
-    display: inline-block;
-    box-shadow: 0 0 8px #10b981;
-    animation: adminDotPulse 2s infinite ease-in-out;
-}
-
-@keyframes adminDotPulse {
-    0% { transform: scale(0.9); opacity: 0.8; }
-    50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px #34d399; }
-    100% { transform: scale(0.9); opacity: 0.8; }
-}
-
-.admin-sidebar-btn-logout {
-    display: block;
-    width: 100%;
-    text-align: center;
-    padding: 0.48rem 0.75rem;
+.admin-sidebar-btn-logout-mini {
+    width: 32px;
+    height: 32px;
     border-radius: 8px;
-    background: rgba(239, 68, 68, 0.1);
+    background: rgba(239, 68, 68, 0.12);
     border: 1px solid rgba(239, 68, 68, 0.3);
     color: #fca5a5;
-    font-size: 0.82rem;
-    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
     transition: all 0.2s ease;
     cursor: pointer;
 }
 
-.admin-sidebar-btn-logout:hover {
+.admin-sidebar-btn-logout-mini:hover {
     background: #ef4444;
     color: #ffffff;
     border-color: #ef4444;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+    box-shadow: 0 3px 10px rgba(239, 68, 68, 0.35);
+    transform: scale(1.05);
 }
 
 /* Main Content Area (Kanan) - Margin Left 270px Untuk Ruang Fixed Sidebar */
