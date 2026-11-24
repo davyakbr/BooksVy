@@ -22,6 +22,56 @@ window.togglePasswordVisibility = function (inputId, btn) {
     }
 };
 
+// Notifikasi real-time simpel untuk input angka (telepon)
+window.validateNumberInput = function (input, maxDigits, fieldLabel) {
+    maxDigits = maxDigits || 15;
+    fieldLabel = fieldLabel || 'Data';
+    
+    const originalVal = input.value;
+    const cleanVal = originalVal.replace(/[^0-9]/g, '');
+    const noticeEl = input.parentNode.querySelector('.input-notice');
+
+    function showNotice(msg) {
+        if (noticeEl) {
+            noticeEl.textContent = msg;
+            noticeEl.classList.remove('d-none');
+            clearTimeout(input._noticeTimer);
+            input._noticeTimer = setTimeout(function () {
+                noticeEl.classList.add('d-none');
+            }, 2000);
+        } else if (typeof Swal !== 'undefined') {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 1800,
+            });
+            Toast.fire({
+                icon: 'warning',
+                title: msg
+            });
+        }
+    }
+
+    // Jika user mengetik selain angka
+    if (originalVal !== cleanVal) {
+        showNotice('Hanya angka yang diperbolehkan');
+    } 
+    // Jika mencapai batas digit maksimal
+    else if (cleanVal.length >= maxDigits && originalVal.length >= maxDigits) {
+        if (input._lastLen !== maxDigits) {
+            showNotice('Maksimal ' + maxDigits + ' digit');
+        }
+    } else {
+        if (noticeEl && cleanVal.length < maxDigits) {
+            noticeEl.classList.add('d-none');
+        }
+    }
+
+    input._lastLen = cleanVal.length;
+    input.value = cleanVal.slice(0, maxDigits);
+};
+
 function showCartToast(message, isSuccess = true) {
     const toastEl = document.getElementById('cartToast');
     const toastMsg = document.getElementById('cartToastMsg');
@@ -165,6 +215,21 @@ window.handleAddToCart = function (event, form) {
         event.stopPropagation();
     }
 
+    const qtyInput = form ? form.querySelector('input[name="quantity"]') : null;
+    if (qtyInput) {
+        const max = parseInt(qtyInput.getAttribute('max')) || 999;
+        const min = parseInt(qtyInput.getAttribute('min')) || 1;
+        let val = parseInt(qtyInput.value) || 1;
+        if (val > max) {
+            qtyInput.value = max;
+            showCartToast('Stok tidak mencukupi! Jumlah pesanan tidak boleh melebihi stok yang tersedia (maksimal ' + max + ' unit).', false);
+            return false;
+        }
+        if (val < min) {
+            qtyInput.value = min;
+        }
+    }
+
     const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
     const originalHtml = submitBtn ? submitBtn.innerHTML : '';
     if (submitBtn) {
@@ -284,13 +349,66 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // 2. Quantity Counter di Cart / Detail Buku
+    // 2. Quantity Counter di Cart / Detail Buku (Dengan validasi ketikan real-time)
     const qtyInputs = document.querySelectorAll('.qty-input');
     qtyInputs.forEach(function (input) {
-        const btnMinus = input.parentElement.querySelector('.btn-qty-minus');
-        const btnPlus = input.parentElement.querySelector('.btn-qty-plus');
+        const btnMinus = input.parentElement ? input.parentElement.querySelector('.btn-qty-minus') : null;
+        const btnPlus = input.parentElement ? input.parentElement.querySelector('.btn-qty-plus') : null;
         const max = parseInt(input.getAttribute('max')) || 999;
         const min = parseInt(input.getAttribute('min')) || 1;
+
+        // Cegah pengetikan karakter simbol/tanda minus/eksponen
+        input.addEventListener('keydown', function (e) {
+            if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        // Validasi REAL-TIME saat pengguna MENGETIK angka di kolom kuantitas
+        input.addEventListener('input', function () {
+            // Hapus karakter non-angka jika ada yang tembus/copy-paste
+            let cleanVal = this.value.replace(/[^0-9]/g, '');
+            if (this.value !== cleanVal) {
+                this.value = cleanVal;
+            }
+
+            if (this.value === '') {
+                return; // Berikan kesempatan user menghapus untuk mengetik angka baru
+            }
+
+            let val = parseInt(this.value, 10);
+            if (isNaN(val)) val = min;
+
+            // Jika angka yang diketik MELEBIHI stok maksimal yang tersedia
+            if (val > max) {
+                this.value = max;
+                const msg = 'Stok tidak mencukupi! Jumlah pesanan tidak boleh melebihi stok yang tersedia (maksimal ' + max + ' unit).';
+                if (typeof showCartToast === 'function') {
+                    showCartToast(msg, false);
+                } else {
+                    alert(msg);
+                }
+            }
+        });
+
+        // Saat selesai mengetik (kursor berpindah / blur)
+        input.addEventListener('blur', function () {
+            let val = parseInt(this.value, 10);
+            if (isNaN(val) || val < min) {
+                this.value = min;
+            } else if (val > max) {
+                this.value = max;
+            }
+        });
+
+        input.addEventListener('change', function () {
+            let val = parseInt(this.value, 10);
+            if (isNaN(val) || val < min) {
+                this.value = min;
+            } else if (val > max) {
+                this.value = max;
+            }
+        });
 
         if (btnMinus) {
             btnMinus.addEventListener('click', function () {

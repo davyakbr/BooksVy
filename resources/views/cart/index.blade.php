@@ -508,6 +508,40 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.querySelectorAll('.cart-qty-input').forEach(function (input) {
+        input.addEventListener('keydown', function (e) {
+            if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
+                e.preventDefault();
+            }
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                this.blur();
+            }
+        });
+
+        // Validasi ketikan langsung saat user mengetik nominal angka di keranjang
+        input.addEventListener('input', function () {
+            let cleanVal = this.value.replace(/[^0-9]/g, '');
+            if (this.value !== cleanVal) {
+                this.value = cleanVal;
+            }
+            if (this.value === '') return;
+
+            const max = parseInt(this.getAttribute('max')) || 999;
+            let val = parseInt(this.value, 10);
+            if (val > max) {
+                this.value = max;
+                const bookId = this.getAttribute('data-book-id');
+                const bookTitleEl = document.querySelector('#cart-row-' + bookId + ' h6 a');
+                const bookTitle = bookTitleEl ? bookTitleEl.textContent.trim() : 'buku ini';
+                const msg = 'Stok tidak mencukupi! Buku "' + bookTitle + '" maksimal hanya tersedia ' + max + ' unit.';
+                if (typeof showCartToast === 'function') {
+                    showCartToast(msg, false);
+                } else {
+                    alert(msg);
+                }
+            }
+        });
+
         input.addEventListener('change', function () {
             const bookId = this.getAttribute('data-book-id');
             let val = parseInt(this.value) || 1;
