@@ -22,7 +22,7 @@ window.togglePasswordVisibility = function (inputId, btn) {
     }
 };
 
-// Notifikasi real-time simpel untuk input angka (telepon / NIK)
+// Notifikasi real-time simpel untuk input angka (telepon)
 window.validateNumberInput = function (input, maxDigits, fieldLabel) {
     maxDigits = maxDigits || 15;
     fieldLabel = fieldLabel || 'Data';

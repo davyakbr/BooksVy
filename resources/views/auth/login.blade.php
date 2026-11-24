@@ -35,7 +35,7 @@
                     <label class="form-label small fw-semibold text-muted">Alamat Email</label>
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope text-muted"></i></span>
-                        <input type="email" name="email" class="form-control bg-light border-start-0" value="{{ old('email') }}" required autofocus>
+                        <input type="email" name="email" class="form-control bg-light border-start-0" value="{{ old('email') }}" placeholder="Masukkan alamat email Anda" required autofocus>
                     </div>
                 </div>
 

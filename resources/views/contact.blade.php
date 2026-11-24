@@ -262,7 +262,7 @@
                 <p class="small text-white-50 mb-3" style="line-height: 1.6;">
                     Butuh konfirmasi instan pembayaran atau pengecekan stok darurat? Hubungi nomor resmi customer service kami.
                 </p>
-                <a href="https://wa.me/6285781880279?text=Halo%20Admin%20BooksVy,%20saya%20ingin%20berkonsultasi%20seputar%20pesanan%20buku." target="_blank" class="btn btn-light text-success fw-bold rounded-pill w-100 shadow-sm">
+                <a href="https://wa.me/6285781880279?text=Halo%20Admin%20BooksVy,%20saya%20ingin%20berkonsultasi%20seputar%20buku." target="_blank" class="btn btn-light text-success fw-bold rounded-pill w-100 shadow-sm">
                     <i class="bi bi-chat-dots-fill me-1"></i> Mulai Chat WhatsApp
                 </a>
             </div>

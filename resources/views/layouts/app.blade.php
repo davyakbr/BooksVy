@@ -279,7 +279,6 @@
                         <li><a href="{{ route('login') }}"><i class="bi bi-chevron-right me-1" style="color:#f59e0b;"></i> Masuk Akun</a></li>
                         <li><a href="{{ route('register') }}"><i class="bi bi-chevron-right me-1" style="color:#f59e0b;"></i> Daftar Baru</a></li>
                     @endauth
-                    <li><a href="{{ route('about') }}#faq"><i class="bi bi-chevron-right me-1" style="color:#f59e0b;"></i> Panduan Pembayaran</a></li>
                 </ul>
             </div>
 
