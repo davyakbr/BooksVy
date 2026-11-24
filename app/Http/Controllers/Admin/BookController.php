@@ -196,9 +196,13 @@ class BookController extends Controller
             return back()->with('danger', 'Buku "' . $title . '" tidak dapat dihapus karena masih memiliki sisa stok (' . $book->stock . ' unit).');
         }
 
-        // Proteksi 2: Tidak bisa dihapus jika sudah memiliki riwayat transaksi pelanggan
-        if ($book->orderItems()->exists()) {
-            return back()->with('danger', 'Buku "' . $title . '" tidak dapat dihapus karena sudah memiliki riwayat transaksi pesanan pelanggan.');
+        // Proteksi 2: Tidak bisa dihapus HANYA jika masih ada transaksi pesanan yang sedang aktif/berjalan
+        $hasActiveOrders = $book->orders()
+            ->whereIn('order_status', ['Menunggu Konfirmasi', 'Sedang Diproses', 'Sedang Dikirim'])
+            ->exists();
+
+        if ($hasActiveOrders) {
+            return back()->with('danger', 'Buku "' . $title . '" tidak dapat dihapus karena masih ada pesanan pelanggan yang sedang aktif diproses.');
         }
 
         // Hapus file cover jika ada
