@@ -124,17 +124,6 @@
             </div>
 
             <div class="admin-header-actions d-flex align-items-center gap-2">
-                <!-- Tombol Notifikasi Pesan Masuk -->
-                <a href="{{ route('admin.messages.index') }}" class="btn btn-white bg-white border rounded-pill px-3 py-1 position-relative d-inline-flex align-items-center gap-2 shadow-sm text-dark text-decoration-none" title="Pesan Masuk">
-                    <i class="bi bi-chat-left-dots{{ ($unreadCount ?? 0) > 0 ? '-fill text-danger' : ' text-secondary' }}"></i>
-                    <span class="small fw-semibold d-none d-md-inline">Pesan Masuk</span>
-                    @if(($unreadCount ?? 0) > 0)
-                        <span class="badge rounded-pill bg-danger text-white fw-bold px-2 py-1 shadow-sm" style="font-size: 0.72rem;">
-                            {{ $unreadCount }} Baru
-                        </span>
-                    @endif
-                </a>
-
                 <a href="{{ route('home') }}" target="_blank" class="admin-btn-preview-store d-none d-sm-inline-flex align-items-center gap-1">
                     Buka Toko <i class="bi bi-arrow-up-right"></i>
                 </a>
